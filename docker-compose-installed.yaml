@@ -19,7 +19,7 @@ services:
   market-shell:
     build:
       context: .
-      dockerfile: ./dev_env/Dockerfile-file
+      dockerfile: ./dev_env/Dockerfile-installed
     image: market-dev-env-installed
     container_name: market-shell-installed
     depends_on:
