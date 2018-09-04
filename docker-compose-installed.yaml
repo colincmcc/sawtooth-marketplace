@@ -16,6 +16,38 @@
 version: '2.1'
 
 services:
+  sawtooth-rest-api:
+    image: hyperledger/sawtooth-rest-api
+    container_name: sawtooth-rest-api
+    expose:
+      - 8008
+    ports:
+      - '8008:8008'
+      - '8043:8008'
+    depends_on:
+      - validator
+    entrypoint: |
+      sawtooth-rest-api -vv
+        --connect tcp://validator:4004
+        --bind sawtooth-rest-api:8008
+
+  sawtooth-shell:
+    image: hyperledger/sawtooth-shell
+    container_name: sawtooth-shell
+    volumes:
+      - '.:/project/sawtooth-marketplace'
+    working_dir: /project/sawtooth-marketplace
+    container_name: sawtooth-shell
+    depends_on:
+      - sawtooth-rest-api
+    entrypoint: |
+      bash -c "
+        if [ ! -f /root/.sawtooth/keys/root.priv ]; then
+        sawtooth keygen
+        fi;
+        tail -f /dev/null
+      "
+  
   market-shell:
     build:
       context: .
@@ -108,14 +140,14 @@ services:
       - 28015
 
   settings-tp:
-    image: hyperledger/sawtooth-settings-tp:1.0
+    image: hyperledger/sawtooth-settings-tp
     container_name: sawtooth-settings-tp-installed
     depends_on:
       - validator
     command: settings-tp -v -C tcp://validator:4004
 
   validator:
-    image: hyperledger/sawtooth-validator:1.0
+    image: hyperledger/sawtooth-validator
     container_name: sawtooth-validator-installed
     expose:
       - 4004

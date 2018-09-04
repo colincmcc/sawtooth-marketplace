@@ -1,0 +1,26 @@
+{
+  "apps" : [
+   {
+    "name": "market-rest-api",
+    "script": "./bin/marketplace-rest-api",
+    "interpreter": "python3",
+    "args": "--host localhost --db-host localhost --validator tcp://localhost:4004"
+   },
+   { 
+    "name": "rethinkdb",
+    "script": "rethinkdb"
+   },
+   { 
+    "name": "market-tp",
+    "script": "./bin/marketplace-tp",
+    "interpreter": "python3",
+    "args": "-v -C tcp://localhost:4004"
+   },
+   {
+    "name": "market-ledger-sync",
+    "script": "./bin/marketplace-ledger-sync",
+    "interpreter": "python3",
+    "args": "-vv --db-host localhost --validator tcp://localhost:4004"
+   }
+  ]
+}

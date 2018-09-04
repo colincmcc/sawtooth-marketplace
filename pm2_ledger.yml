@@ -1,0 +1,4 @@
+apps:
+  - script: ./bin/marketplace-rest-api
+    args: "--host localhost --db-host localhost --validator tcp://localhost:4004"
+    interpreter: /usr/bin/python    
