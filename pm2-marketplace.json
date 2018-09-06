@@ -14,13 +14,19 @@
     "name": "market-tp",
     "script": "./bin/marketplace-tp",
     "interpreter": "python3",
-    "args": "-v -C tcp://localhost:4004"
+    "args": "-C tcp://localhost:4004"
    },
    {
     "name": "market-ledger-sync",
     "script": "./bin/marketplace-ledger-sync",
     "interpreter": "python3",
     "args": "-vv --db-host localhost --validator tcp://localhost:4004"
+   },
+   {
+    "name": "identity-tp",
+    "script": "identity-tp",
+    "interpreter": "python3",
+    "args": "-v -C tcp://localhost:4004"
    }
   ]
 }

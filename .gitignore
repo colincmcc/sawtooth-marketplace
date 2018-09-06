@@ -21,3 +21,4 @@ config.py
 # misc
 .DS_Store
 .env
+**/rethinkdb_data

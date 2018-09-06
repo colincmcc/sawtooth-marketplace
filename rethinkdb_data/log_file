@@ -1,98 +1,87 @@
-2018-09-04T16:05:14.437666343 0.034369s notice: Recursively removing directory /home/ubuntu/sawtooth-marketplace/rethinkdb_data/tmp
-2018-09-04T16:05:14.441887400 0.038589s notice: Initializing directory /home/ubuntu/sawtooth-marketplace/rethinkdb_data
-2018-09-04T16:05:14.441971150 0.038672s info: Creating a default database for your convenience. (This is because you ran 'rethinkdb' without 'create', 'serve', or '--join', and the directory '/home/ubuntu/sawtooth-marketplace/rethinkdb_data' did not already exist or is empty.)
-2018-09-04T16:05:14.442004951 0.038706s notice: Running rethinkdb 2.3.6~0xenial (GCC 5.3.1)...
-2018-09-04T16:05:14.444399565 0.041103s notice: Running on Linux 4.4.0-1062-aws x86_64
-2018-09-04T16:05:14.444450004 0.041151s notice: Loading data from directory /home/ubuntu/sawtooth-marketplace/rethinkdb_data
-2018-09-04T16:05:14.465603482 0.062306s info: Automatically using cache size of 849 MB
-2018-09-04T16:05:14.466332427 0.063033s notice: Listening for intracluster connections on port 29015
-2018-09-04T16:05:14.467724487 0.064425s notice: Listening for client driver connections on port 28015
-2018-09-04T16:05:14.467997248 0.064698s notice: Listening for administrative HTTP connections on port 8080
-2018-09-04T16:05:14.468002115 0.064703s notice: Listening on cluster addresses: 127.0.0.1, ::1
-2018-09-04T16:05:14.468006783 0.064708s notice: Listening on driver addresses: 127.0.0.1, ::1
-2018-09-04T16:05:14.468009980 0.064711s notice: Listening on http addresses: 127.0.0.1, ::1
-2018-09-04T16:05:14.468014040 0.064715s notice: To fully expose RethinkDB on the network, bind to all addresses by running rethinkdb with the `--bind all` command line option.
-2018-09-04T16:05:14.468018259 0.064719s notice: Server ready, "ip_10_0_0_216_crh" 61c700a0-c145-4fd1-8647-309a03ea8754
-2018-09-04T16:41:00.257891124 2145.854592s info: Table 04577876-1e1b-4f21-9df2-e2cb612da0ed: Starting a new Raft election for term 1.
-2018-09-04T16:41:00.258925787 2145.855627s info: Table 04577876-1e1b-4f21-9df2-e2cb612da0ed: Added replica on this server.
-2018-09-04T16:41:00.261343860 2145.858045s info: Table 04577876-1e1b-4f21-9df2-e2cb612da0ed: This server is Raft leader for term 1. Latest log index is 0.
-2018-09-04T16:41:00.516204568 2146.112906s info: Table 04577876-1e1b-4f21-9df2-e2cb612da0ed: Configuration is changing.
-2018-09-04T16:41:00.550080982 2146.146782s info: Table 4f81efb3-7e72-4134-bf14-d2fad6c5b28f: Starting a new Raft election for term 1.
-2018-09-04T16:41:00.550290325 2146.146991s info: Table 4f81efb3-7e72-4134-bf14-d2fad6c5b28f: Added replica on this server.
-2018-09-04T16:41:00.553245652 2146.149947s info: Table 4f81efb3-7e72-4134-bf14-d2fad6c5b28f: This server is Raft leader for term 1. Latest log index is 0.
-2018-09-04T16:41:00.807959212 2146.404661s info: Table 4f81efb3-7e72-4134-bf14-d2fad6c5b28f: Configuration is changing.
-2018-09-04T16:41:00.843511695 2146.440213s info: Table cab8836e-34c5-40c9-b7c4-2d274bb83091: Starting a new Raft election for term 1.
-2018-09-04T16:41:00.843631166 2146.440332s info: Table cab8836e-34c5-40c9-b7c4-2d274bb83091: Added replica on this server.
-2018-09-04T16:41:00.846328641 2146.443030s info: Table cab8836e-34c5-40c9-b7c4-2d274bb83091: This server is Raft leader for term 1. Latest log index is 0.
-2018-09-04T16:41:01.101249757 2146.697951s info: Table cab8836e-34c5-40c9-b7c4-2d274bb83091: Configuration is changing.
-2018-09-04T16:41:01.136226091 2146.732927s info: Table b576641d-1d3f-4bce-b043-4c0523795fe5: Starting a new Raft election for term 1.
-2018-09-04T16:41:01.136391387 2146.733092s info: Table b576641d-1d3f-4bce-b043-4c0523795fe5: Added replica on this server.
-2018-09-04T16:41:01.139034779 2146.735736s info: Table b576641d-1d3f-4bce-b043-4c0523795fe5: This server is Raft leader for term 1. Latest log index is 0.
-2018-09-04T16:41:01.394343742 2146.991045s info: Table b576641d-1d3f-4bce-b043-4c0523795fe5: Configuration is changing.
-2018-09-04T16:41:01.430598683 2147.027300s info: Table 066b0132-4ef2-457b-9ad1-2b833ce7dc78: Starting a new Raft election for term 1.
-2018-09-04T16:41:01.430813432 2147.027514s info: Table 066b0132-4ef2-457b-9ad1-2b833ce7dc78: Added replica on this server.
-2018-09-04T16:41:01.433288040 2147.029989s info: Table 066b0132-4ef2-457b-9ad1-2b833ce7dc78: This server is Raft leader for term 1. Latest log index is 0.
-2018-09-04T16:41:01.687932846 2147.284634s info: Table 066b0132-4ef2-457b-9ad1-2b833ce7dc78: Configuration is changing.
-2018-09-04T16:41:01.730378051 2147.327079s info: Table a88ebeda-5773-44b7-9112-4c44348ec9d4: Starting a new Raft election for term 1.
-2018-09-04T16:41:01.731460096 2147.328161s info: Table a88ebeda-5773-44b7-9112-4c44348ec9d4: Added replica on this server.
-2018-09-04T16:41:01.734277159 2147.330978s info: Table a88ebeda-5773-44b7-9112-4c44348ec9d4: This server is Raft leader for term 1. Latest log index is 0.
-2018-09-04T16:41:01.989505734 2147.586207s info: Table a88ebeda-5773-44b7-9112-4c44348ec9d4: Configuration is changing.
-2018-09-04T19:29:32.692270720 12258.288972s notice: Server got SIGINT from pid 0, uid 0; shutting down...
-2018-09-04T19:29:32.692346946 12258.289048s notice: Shutting down client connections...
-2018-09-04T19:29:32.693292012 12258.289993s notice: All client connections closed.
-2018-09-04T19:29:32.693305430 12258.290006s notice: Shutting down storage engine... (This may take a while if you had a lot of unflushed data in the writeback cache.)
-2018-09-04T19:29:32.709849302 12258.306551s notice: Storage engine shut down.
-2018-09-04T19:30:20.210058792 0.038951s notice: Running rethinkdb 2.3.6~0xenial (GCC 5.3.1)...
-2018-09-04T19:30:20.212535670 0.041429s notice: Running on Linux 4.4.0-1062-aws x86_64
-2018-09-04T19:30:20.212585456 0.041477s notice: Loading data from directory /home/ubuntu/sawtooth-marketplace/rethinkdb_data
-2018-09-04T19:30:20.230741025 0.059633s info: Automatically using cache size of 830 MB
-2018-09-04T19:30:20.231475153 0.060367s notice: Listening for intracluster connections on port 29015
-2018-09-04T19:30:20.307621928 0.136514s notice: Listening for client driver connections on port 28015
-2018-09-04T19:30:20.308918031 0.137810s notice: Listening for administrative HTTP connections on port 8080
-2018-09-04T19:30:20.308921922 0.137813s notice: Listening on cluster addresses: 127.0.0.1, ::1
-2018-09-04T19:30:20.308959010 0.137851s notice: Listening on driver addresses: 127.0.0.1, ::1
-2018-09-04T19:30:20.308961820 0.137853s notice: Listening on http addresses: 127.0.0.1, ::1
-2018-09-04T19:30:20.308964615 0.137856s notice: To fully expose RethinkDB on the network, bind to all addresses by running rethinkdb with the `--bind all` command line option.
-2018-09-04T19:30:20.308967474 0.137859s notice: Server ready, "ip_10_0_0_216_crh" 61c700a0-c145-4fd1-8647-309a03ea8754
-2018-09-04T19:30:21.455831790 1.284724s info: Table 04577876-1e1b-4f21-9df2-e2cb612da0ed: Starting a new Raft election for term 2.
-2018-09-04T19:30:21.458479364 1.287371s info: Table 04577876-1e1b-4f21-9df2-e2cb612da0ed: This server is Raft leader for term 2. Latest log index is 4.
-2018-09-04T19:30:21.761034251 1.589926s info: Table cab8836e-34c5-40c9-b7c4-2d274bb83091: Starting a new Raft election for term 2.
-2018-09-04T19:30:21.763988706 1.592880s info: Table cab8836e-34c5-40c9-b7c4-2d274bb83091: This server is Raft leader for term 2. Latest log index is 4.
-2018-09-04T19:30:21.871354247 1.700246s info: Table 4f81efb3-7e72-4134-bf14-d2fad6c5b28f: Starting a new Raft election for term 2.
-2018-09-04T19:30:21.874210785 1.703103s info: Table 4f81efb3-7e72-4134-bf14-d2fad6c5b28f: This server is Raft leader for term 2. Latest log index is 4.
-2018-09-04T19:30:22.038732317 1.867624s info: Table b576641d-1d3f-4bce-b043-4c0523795fe5: Starting a new Raft election for term 2.
-2018-09-04T19:30:22.041717441 1.870609s info: Table b576641d-1d3f-4bce-b043-4c0523795fe5: This server is Raft leader for term 2. Latest log index is 4.
-2018-09-04T19:30:22.079604923 1.908497s info: Table 066b0132-4ef2-457b-9ad1-2b833ce7dc78: Starting a new Raft election for term 2.
-2018-09-04T19:30:22.082295268 1.911187s info: Table 066b0132-4ef2-457b-9ad1-2b833ce7dc78: This server is Raft leader for term 2. Latest log index is 4.
-2018-09-04T19:30:22.110243873 1.939136s info: Table a88ebeda-5773-44b7-9112-4c44348ec9d4: Starting a new Raft election for term 2.
-2018-09-04T19:30:22.113080000 1.941972s info: Table a88ebeda-5773-44b7-9112-4c44348ec9d4: This server is Raft leader for term 2. Latest log index is 4.
-2018-09-04T20:16:36.318653876 2776.147546s notice: Server got SIGINT from pid 21534, uid 1000; shutting down...
-2018-09-04T20:16:36.318717777 2776.147609s notice: Shutting down client connections...
-2018-09-04T20:16:36.319844629 2776.148736s notice: All client connections closed.
-2018-09-04T20:16:36.319852645 2776.148756s notice: Shutting down storage engine... (This may take a while if you had a lot of unflushed data in the writeback cache.)
-2018-09-04T20:16:36.330925161 2776.159817s notice: Storage engine shut down.
-2018-09-04T20:16:36.331673399 2776.160565s error: Failed to shutdown worker process: 'failed to send job function to worker'.  Killing it.
-2018-09-04T20:29:41.564195239 0.042143s notice: Running rethinkdb 2.3.6~0xenial (GCC 5.3.1)...
-2018-09-04T20:29:41.581657777 0.059608s notice: Running on Linux 4.4.0-1062-aws x86_64
-2018-09-04T20:29:41.581708389 0.059655s notice: Loading data from directory /home/ubuntu/sawtooth-marketplace/rethinkdb_data
-2018-09-04T20:29:41.629202159 0.107150s info: Automatically using cache size of 828 MB
-2018-09-04T20:29:41.629841790 0.107789s notice: Listening for intracluster connections on port 29015
-2018-09-04T20:29:41.763400885 0.241348s notice: Listening for client driver connections on port 28015
-2018-09-04T20:29:41.763717940 0.241665s notice: Listening for administrative HTTP connections on port 8080
-2018-09-04T20:29:41.763721417 0.241668s notice: Listening on cluster addresses: 127.0.0.1, ::1
-2018-09-04T20:29:41.763724748 0.241672s notice: Listening on driver addresses: 127.0.0.1, ::1
-2018-09-04T20:29:41.763727857 0.241675s notice: Listening on http addresses: 127.0.0.1, ::1
-2018-09-04T20:29:41.763730446 0.241677s notice: To fully expose RethinkDB on the network, bind to all addresses by running rethinkdb with the `--bind all` command line option.
-2018-09-04T20:29:41.763749170 0.241696s notice: Server ready, "ip_10_0_0_216_crh" 61c700a0-c145-4fd1-8647-309a03ea8754
-2018-09-04T20:29:43.100534154 1.578482s info: Table b576641d-1d3f-4bce-b043-4c0523795fe5: Starting a new Raft election for term 3.
-2018-09-04T20:29:43.103797143 1.581744s info: Table b576641d-1d3f-4bce-b043-4c0523795fe5: This server is Raft leader for term 3. Latest log index is 7.
-2018-09-04T20:29:43.287526401 1.765474s info: Table cab8836e-34c5-40c9-b7c4-2d274bb83091: Starting a new Raft election for term 3.
-2018-09-04T20:29:43.290417530 1.768365s info: Table cab8836e-34c5-40c9-b7c4-2d274bb83091: This server is Raft leader for term 3. Latest log index is 7.
-2018-09-04T20:29:43.418227783 1.896175s info: Table 4f81efb3-7e72-4134-bf14-d2fad6c5b28f: Starting a new Raft election for term 3.
-2018-09-04T20:29:43.419825949 1.897773s info: Table 04577876-1e1b-4f21-9df2-e2cb612da0ed: Starting a new Raft election for term 3.
-2018-09-04T20:29:43.423417157 1.901364s info: Table 4f81efb3-7e72-4134-bf14-d2fad6c5b28f: This server is Raft leader for term 3. Latest log index is 7.
-2018-09-04T20:29:43.423969744 1.901917s info: Table 04577876-1e1b-4f21-9df2-e2cb612da0ed: This server is Raft leader for term 3. Latest log index is 7.
-2018-09-04T20:29:43.446872978 1.924820s info: Table 066b0132-4ef2-457b-9ad1-2b833ce7dc78: Starting a new Raft election for term 3.
-2018-09-04T20:29:43.449599048 1.927546s info: Table 066b0132-4ef2-457b-9ad1-2b833ce7dc78: This server is Raft leader for term 3. Latest log index is 7.
-2018-09-04T20:29:43.464079352 1.942027s info: Table a88ebeda-5773-44b7-9112-4c44348ec9d4: Starting a new Raft election for term 3.
-2018-09-04T20:29:43.466708147 1.944655s info: Table a88ebeda-5773-44b7-9112-4c44348ec9d4: This server is Raft leader for term 3. Latest log index is 7.
+2018-09-05T18:24:33.815493311 0.020845s notice: Recursively removing directory /home/ubuntu/sawtooth-marketplace/rethinkdb_data/tmp
+2018-09-05T18:24:33.825735723 0.031086s notice: Initializing directory /home/ubuntu/sawtooth-marketplace/rethinkdb_data
+2018-09-05T18:24:33.825798779 0.031149s info: Creating a default database for your convenience. (This is because you ran 'rethinkdb' without 'create', 'serve', or '--join', and the directory '/home/ubuntu/sawtooth-marketplace/rethinkdb_data' did not already exist or is empty.)
+2018-09-05T18:24:33.825832864 0.031183s notice: Running rethinkdb 2.3.6~0xenial (GCC 5.3.1)...
+2018-09-05T18:24:33.837853771 0.043207s notice: Running on Linux 4.4.0-1062-aws x86_64
+2018-09-05T18:24:33.837907970 0.043258s notice: Loading data from directory /home/ubuntu/sawtooth-marketplace/rethinkdb_data
+2018-09-05T18:24:33.880557370 0.085908s info: Automatically using cache size of 910 MB
+2018-09-05T18:24:33.881234893 0.086585s notice: Listening for intracluster connections on port 29015
+2018-09-05T18:24:33.882633322 0.087984s notice: Listening for client driver connections on port 28015
+2018-09-05T18:24:33.882800358 0.088151s notice: Listening for administrative HTTP connections on port 8080
+2018-09-05T18:24:33.882803829 0.088154s notice: Listening on cluster addresses: 127.0.0.1, ::1
+2018-09-05T18:24:33.882808798 0.088159s notice: Listening on driver addresses: 127.0.0.1, ::1
+2018-09-05T18:24:33.882812210 0.088162s notice: Listening on http addresses: 127.0.0.1, ::1
+2018-09-05T18:24:33.882817077 0.088167s notice: To fully expose RethinkDB on the network, bind to all addresses by running rethinkdb with the `--bind all` command line option.
+2018-09-05T18:24:33.882821456 0.088172s notice: Server ready, "ip_10_0_0_216_7p5" d52720f9-a4b4-449e-9db0-c394bd9e3a00
+2018-09-05T18:25:30.041291737 56.246643s notice: Server got SIGINT from pid 21534, uid 1000; shutting down...
+2018-09-05T18:25:30.041351695 56.246702s notice: Shutting down client connections...
+2018-09-05T18:25:30.042246068 56.247597s notice: All client connections closed.
+2018-09-05T18:25:30.042253663 56.247604s notice: Shutting down storage engine... (This may take a while if you had a lot of unflushed data in the writeback cache.)
+2018-09-05T18:25:30.042455827 56.247806s notice: Storage engine shut down.
+2018-09-05T18:25:30.046640834 56.251991s error: Failed to shutdown worker process: 'failed to send job function to worker'.  Killing it.
+2018-09-05T18:25:30.172710746 0.012081s notice: Running rethinkdb 2.3.6~0xenial (GCC 5.3.1)...
+2018-09-05T18:25:30.175416030 0.014788s notice: Running on Linux 4.4.0-1062-aws x86_64
+2018-09-05T18:25:30.175460587 0.014831s notice: Loading data from directory /home/ubuntu/sawtooth-marketplace/rethinkdb_data
+2018-09-05T18:25:30.188436161 0.027807s info: Automatically using cache size of 881 MB
+2018-09-05T18:25:30.189248350 0.028619s notice: Listening for intracluster connections on port 29015
+2018-09-05T18:25:30.190821501 0.030192s notice: Listening for client driver connections on port 28015
+2018-09-05T18:25:30.191149722 0.030520s notice: Listening for administrative HTTP connections on port 8080
+2018-09-05T18:25:30.191153602 0.030523s notice: Listening on cluster addresses: 127.0.0.1, ::1
+2018-09-05T18:25:30.191158169 0.030528s notice: Listening on driver addresses: 127.0.0.1, ::1
+2018-09-05T18:25:30.191162604 0.030532s notice: Listening on http addresses: 127.0.0.1, ::1
+2018-09-05T18:25:30.191166746 0.030537s notice: To fully expose RethinkDB on the network, bind to all addresses by running rethinkdb with the `--bind all` command line option.
+2018-09-05T18:25:30.191171039 0.030541s notice: Server ready, "ip_10_0_0_216_7p5" d52720f9-a4b4-449e-9db0-c394bd9e3a00
+2018-09-05T18:25:43.275989495 13.115360s info: Table 2e5b0698-9b2f-40e3-a226-2520881e7a91: Starting a new Raft election for term 1.
+2018-09-05T18:25:43.276516740 13.115887s info: Table 2e5b0698-9b2f-40e3-a226-2520881e7a91: Added replica on this server.
+2018-09-05T18:25:43.279106077 13.118476s info: Table 2e5b0698-9b2f-40e3-a226-2520881e7a91: This server is Raft leader for term 1. Latest log index is 0.
+2018-09-05T18:25:43.533802627 13.373173s info: Table 2e5b0698-9b2f-40e3-a226-2520881e7a91: Configuration is changing.
+2018-09-05T18:25:43.569240004 13.408611s info: Table 73629a4e-8ef0-4de0-8f22-dc23716e80d8: Starting a new Raft election for term 1.
+2018-09-05T18:25:43.569505267 13.408875s info: Table 73629a4e-8ef0-4de0-8f22-dc23716e80d8: Added replica on this server.
+2018-09-05T18:25:43.572254886 13.411625s info: Table 73629a4e-8ef0-4de0-8f22-dc23716e80d8: This server is Raft leader for term 1. Latest log index is 0.
+2018-09-05T18:25:43.827613161 13.666984s info: Table 73629a4e-8ef0-4de0-8f22-dc23716e80d8: Configuration is changing.
+2018-09-05T18:25:43.864970061 13.704341s info: Table 42a893cb-c3fa-4dba-9e43-4c25510272f1: Starting a new Raft election for term 1.
+2018-09-05T18:25:43.865372075 13.704742s info: Table 42a893cb-c3fa-4dba-9e43-4c25510272f1: Added replica on this server.
+2018-09-05T18:25:43.868002413 13.707373s info: Table 42a893cb-c3fa-4dba-9e43-4c25510272f1: This server is Raft leader for term 1. Latest log index is 0.
+2018-09-05T18:25:44.122996534 13.962367s info: Table 42a893cb-c3fa-4dba-9e43-4c25510272f1: Configuration is changing.
+2018-09-05T18:25:44.157119506 13.996490s info: Table bacddf5a-ad73-4daf-a297-ce0bc6e16de3: Starting a new Raft election for term 1.
+2018-09-05T18:25:44.157549898 13.996920s info: Table bacddf5a-ad73-4daf-a297-ce0bc6e16de3: Added replica on this server.
+2018-09-05T18:25:44.160100513 13.999471s info: Table bacddf5a-ad73-4daf-a297-ce0bc6e16de3: This server is Raft leader for term 1. Latest log index is 0.
+2018-09-05T18:25:44.414937765 14.254309s info: Table bacddf5a-ad73-4daf-a297-ce0bc6e16de3: Configuration is changing.
+2018-09-05T18:25:44.451517080 14.290887s info: Table 323c474a-e07e-436c-93ac-c46f1ff69969: Starting a new Raft election for term 1.
+2018-09-05T18:25:44.451838143 14.291208s info: Table 323c474a-e07e-436c-93ac-c46f1ff69969: Added replica on this server.
+2018-09-05T18:25:44.454726614 14.294100s info: Table 323c474a-e07e-436c-93ac-c46f1ff69969: This server is Raft leader for term 1. Latest log index is 0.
+2018-09-05T18:25:44.709785806 14.549156s info: Table 323c474a-e07e-436c-93ac-c46f1ff69969: Configuration is changing.
+2018-09-05T18:25:44.744716997 14.584087s info: Table 988aa234-5ae0-4946-ad16-539a72cc76a4: Starting a new Raft election for term 1.
+2018-09-05T18:25:44.745049562 14.584420s info: Table 988aa234-5ae0-4946-ad16-539a72cc76a4: Added replica on this server.
+2018-09-05T18:25:44.747874801 14.587245s info: Table 988aa234-5ae0-4946-ad16-539a72cc76a4: This server is Raft leader for term 1. Latest log index is 0.
+2018-09-05T18:25:45.002929226 14.842300s info: Table 988aa234-5ae0-4946-ad16-539a72cc76a4: Configuration is changing.
+2018-09-05T18:25:49.222910457 19.062281s notice: Server got SIGINT from pid 21534, uid 1000; shutting down...
+2018-09-05T18:25:49.222976085 19.062346s notice: Shutting down client connections...
+2018-09-05T18:25:49.223243063 19.062613s notice: All client connections closed.
+2018-09-05T18:25:49.223249641 19.062620s notice: Shutting down storage engine... (This may take a while if you had a lot of unflushed data in the writeback cache.)
+2018-09-05T18:25:49.234445864 19.073816s notice: Storage engine shut down.
+2018-09-05T18:25:49.235120225 19.074490s error: Failed to shutdown worker process: 'failed to send job function to worker'.  Killing it.
+2018-09-05T18:25:49.356417569 0.013543s notice: Running rethinkdb 2.3.6~0xenial (GCC 5.3.1)...
+2018-09-05T18:25:49.359207641 0.016336s notice: Running on Linux 4.4.0-1062-aws x86_64
+2018-09-05T18:25:49.359258438 0.016384s notice: Loading data from directory /home/ubuntu/sawtooth-marketplace/rethinkdb_data
+2018-09-05T18:25:49.372391020 0.029517s info: Automatically using cache size of 881 MB
+2018-09-05T18:25:49.373099698 0.030225s notice: Listening for intracluster connections on port 29015
+2018-09-05T18:25:49.450458102 0.107584s notice: Listening for client driver connections on port 28015
+2018-09-05T18:25:49.450598680 0.107724s notice: Listening for administrative HTTP connections on port 8080
+2018-09-05T18:25:49.450601998 0.107727s notice: Listening on cluster addresses: 127.0.0.1, ::1
+2018-09-05T18:25:49.450665128 0.107791s notice: Listening on driver addresses: 127.0.0.1, ::1
+2018-09-05T18:25:49.450668858 0.107794s notice: Listening on http addresses: 127.0.0.1, ::1
+2018-09-05T18:25:49.450671593 0.107797s notice: To fully expose RethinkDB on the network, bind to all addresses by running rethinkdb with the `--bind all` command line option.
+2018-09-05T18:25:49.450675125 0.107800s notice: Server ready, "ip_10_0_0_216_7p5" d52720f9-a4b4-449e-9db0-c394bd9e3a00
+2018-09-05T18:25:50.459887017 1.117013s info: Table 988aa234-5ae0-4946-ad16-539a72cc76a4: Starting a new Raft election for term 2.
+2018-09-05T18:25:50.463315492 1.120441s info: Table 988aa234-5ae0-4946-ad16-539a72cc76a4: This server is Raft leader for term 2. Latest log index is 4.
+2018-09-05T18:25:50.564879710 1.222006s info: Table 42a893cb-c3fa-4dba-9e43-4c25510272f1: Starting a new Raft election for term 2.
+2018-09-05T18:25:50.568116700 1.225242s info: Table 42a893cb-c3fa-4dba-9e43-4c25510272f1: This server is Raft leader for term 2. Latest log index is 4.
+2018-09-05T18:25:50.661635231 1.318761s info: Table bacddf5a-ad73-4daf-a297-ce0bc6e16de3: Starting a new Raft election for term 2.
+2018-09-05T18:25:50.666106657 1.323233s info: Table bacddf5a-ad73-4daf-a297-ce0bc6e16de3: This server is Raft leader for term 2. Latest log index is 4.
+2018-09-05T18:25:50.925756909 1.582883s info: Table 2e5b0698-9b2f-40e3-a226-2520881e7a91: Starting a new Raft election for term 2.
+2018-09-05T18:25:50.928413385 1.585539s info: Table 2e5b0698-9b2f-40e3-a226-2520881e7a91: This server is Raft leader for term 2. Latest log index is 4.
+2018-09-05T18:25:51.021092429 1.678218s info: Table 73629a4e-8ef0-4de0-8f22-dc23716e80d8: Starting a new Raft election for term 2.
+2018-09-05T18:25:51.023840985 1.680967s info: Table 73629a4e-8ef0-4de0-8f22-dc23716e80d8: This server is Raft leader for term 2. Latest log index is 4.
+2018-09-05T18:25:51.062556846 1.719683s info: Table 323c474a-e07e-436c-93ac-c46f1ff69969: Starting a new Raft election for term 2.
+2018-09-05T18:25:51.065168169 1.722294s info: Table 323c474a-e07e-436c-93ac-c46f1ff69969: This server is Raft leader for term 2. Latest log index is 4.
