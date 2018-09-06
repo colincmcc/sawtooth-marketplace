@@ -58,7 +58,7 @@ def make_protobuf(path, pkg_name):
         _protoc([
             __file__,
             "-I=%s" % tmp_dir,
-            "--js_out=%s" % os.path.join(TOP_DIR, path),
+            "--py_out=%s" % os.path.join(TOP_DIR, path),
         ] + glob("%s/*.proto" % tmp_pkg_dir))
         print("Generated protobuf classes: {}".format(OUT_DIR))
 

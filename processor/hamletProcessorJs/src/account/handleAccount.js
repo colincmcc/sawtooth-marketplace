@@ -1,5 +1,5 @@
 const { InvalidTransaction } = require('sawtooth-sdk/processor/exceptions')
-const { HamletState } = require('../hamlet_state')
+const { HamletState } = require('../hamletState')
 
 
 // createAccount (CreateAccount): The transaction.

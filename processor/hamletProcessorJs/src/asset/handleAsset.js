@@ -1,10 +1,11 @@
+/*
 const { InvalidTransaction } = require('sawtooth-sdk/processor/exceptions')
 
 // createAsset (CreateAsset): The transaction.
 // header (TransactionHeader): The header of the Transaction.
 // state (MarketplaceState): The wrapper around the context.
 
-export function handleAssetCreation (createAsset, header, state) {
+function handleAssetCreation (createAsset, header, state) {
   const currentAccount = state.getAccount(header.signer_public_key)
   const currentAsset = state.getAsset(createAsset.name)
   if(!currentAccount) {
@@ -25,3 +26,6 @@ export function handleAssetCreation (createAsset, header, state) {
     state.setAsset(newAsset)
   }
 }
+
+module.exports = handleAssetCreation
+*/

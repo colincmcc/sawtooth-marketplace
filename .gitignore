@@ -1,0 +1,24 @@
+# Generated Protobufs
+**/protobuf/
+
+# Jetbrains Ides
+.idea/
+
+**/__pycache__/**
+
+# Node
+**/node_modules
+**/package-lock.json
+**/npm-debug.log
+
+# Sanic
+config.py
+
+# Webpack
+**/dist
+
+
+# misc
+.DS_Store
+.env
+**/rethinkdb_data

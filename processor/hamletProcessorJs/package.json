@@ -2,13 +2,14 @@
   "name": "hamlet_processor",
   "version": "1.0.0",
   "description": "Sawtooth Processor for Hamlet Loyalty",
-  "main": "index.js",
+  "main": "./src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "google-protobuf": "^3.6.1",
     "sawtooth-sdk": "^1.0.5"
   },
   "devDependencies": {
