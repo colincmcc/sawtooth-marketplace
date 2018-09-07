@@ -40,6 +40,4 @@ class HamletHandler  extends TransactionHandler {
   }
 }
 
-module.exports ={
-  HamletHandler
-}
+module.exports = HamletHandler

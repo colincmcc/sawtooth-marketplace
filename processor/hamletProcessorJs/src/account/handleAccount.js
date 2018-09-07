@@ -7,7 +7,7 @@ const { HamletState } = require('../hamletState')
 // state (MarketplaceState): The wrapper around the Context.
 
 function handleAccountCreation(createAccount, header, state){
-
+  console.log(createAccount, header, state)
   const currentAccount = state.getAccount(header.signer_public_key)
 
   if(currentAccount){
