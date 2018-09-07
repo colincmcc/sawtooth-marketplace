@@ -6,7 +6,7 @@ const { HamletState } = require('../hamletState')
 // header (TransactionHeader): The header of the Transaction.
 // state (MarketplaceState): The wrapper around the Context.
 
-export function handleAccountCreation(createAccount, header, state){
+function handleAccountCreation(createAccount, header, state){
 
   const currentAccount = state.getAccount(header.signer_public_key)
 
@@ -25,3 +25,5 @@ export function handleAccountCreation(createAccount, header, state){
   }
 
 }
+
+module.exports = handleAccountCreation

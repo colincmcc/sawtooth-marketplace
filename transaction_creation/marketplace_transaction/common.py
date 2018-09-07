@@ -81,7 +81,7 @@ def make_header(inputs,
         batcher_public_key=batcher_pubkey,
         dependencies=[],
         family_name=addresser.FAMILY_NAME,
-        family_version='1.0',
+        family_version='1.1',
         nonce=uuid4().hex,
         signer_public_key=signer_pubkey,
         payload_sha512=payload_sha512)

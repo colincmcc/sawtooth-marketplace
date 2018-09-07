@@ -2,13 +2,13 @@
 const crypto = require('crypto')
 
 // Make a unique hamlet address
-const NS_HASH= (x) =>
+const NS_HASH = (x) =>
 crypto.createHash('sha512').update(x).digest('hex').toLowerCase().substring(0, 64)
 
-const HAMLET_FAMILY = 'hamlet'
-const HAMLET_NAMESPACE = _hash(HAMLET_FAMILY).substring(0,6)
+const HAMLET_FAMILY = 'marketplace'
+const HAMLET_NAMESPACE = hash(HAMLET_FAMILY).substring(0,6)
 
-const _makeHamletAddress = (x) => HAMLET_NAMESPACE + _nsHash(x)
+const _makeHamletAddress = (x) => HAMLET_NAMESPACE + NS_HASH(x)
 
 
 const  accountSpace = Object.freeze({
@@ -25,42 +25,50 @@ const addressSpace = Object.freeze({
   OTHER: 100
 })
 
-_hash(identifier) {
+function hash  (identifier) {
   return crypto.createHash('sha512').update(identifier).digest('hex').toLowerCase()
 }
 
-_compress(address, start, stop) {
+const compress = (address, start, stop) => {
   return "%.2X".toLowerCase() % (parseInt(address, 16) % (stop - start))
 }
 
 // accountId is user's public key
-makeAccountAddress(accountId) {
-  fullHash = _hash(accountId)
+function makeAccountAddress (accountId) {
+  fullHash = hash(accountId)
 
-  return NS_HASH + _compress(
+  return NS_HASH + compress(
     full_hash,
     accountSpace.START,
     accountSpace.STOP
   ) + full_hash.slice(0, 62)
 }
 
-_spaceContains(num, space){
+const spaceContains = (num, space) => {
   return space.START <= num < space.STOP
 }
 
-makeAddress(address) {
+function makeAddress(address) {
   if (address.slice(0, address.length()) != _nsHash){
     return addressSpace.OTHER
   }
 
   let infix = parseInt(address.slice(6, 8), 16)
     console.log(infix)
-  let result
 
-  if(_spaceContains(infix, accountSpace)){
+  let result
+  console.log(result)
+  if(spaceContains(infix, accountSpace)){
     console.log("accountSpace")
     result = addressSpace.ACCOUNT
   }
 
   return result
+}
+
+module.exports = {
+  HAMLET_FAMILY,
+  HAMLET_NAMESPACE,
+  makeAccountAddress,
+  makeAddress,
 }

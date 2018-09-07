@@ -85,8 +85,4 @@ class HamletState {
 }
 
 
-module.exports = {
-  HAMLET_FAMILY,
-  HAMLET_NAMESPACE,
-  HamletState
-}
+module.exports = HamletState
