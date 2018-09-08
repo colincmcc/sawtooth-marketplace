@@ -35,13 +35,13 @@ const compress = (address, start, stop) => {
 
 // accountId is user's public key
 function makeAccountAddress (accountId) {
-  fullHash = hash(accountId)
+  const fullHash = hash(accountId)
 
-  return NS_HASH + compress(
-    full_hash,
+  return HAMLET_NAMESPACE + compress(
+    fullHash,
     accountSpace.START,
     accountSpace.STOP
-  ) + full_hash.slice(0, 62)
+  ) + fullHash.slice(0, 62)
 }
 
 const spaceContains = (num, space) => {

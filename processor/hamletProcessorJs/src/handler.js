@@ -21,13 +21,9 @@ class HamletHandler  extends TransactionHandler {
     let state = new HamletState(context)
 
     let header = transactionProcessRequest.header
-    console.log('handler')
-    console.log(payload)
-    console.log(state)
-    console.log(header)
-    console.log(isCreateAccount(payload))
 
-    if (isCreateAccount(payload)) {
+
+    if (payload.isCreateAccount()) {
       return handleAccount.handleAccountCreation(payload.createAccount, transactionProcessRequest.header, state)
    /* } else if (payload.action === 'createAsset') {
       return asset.handleAssetCreation(payload.createAsset, transaction.header, hamletState) */

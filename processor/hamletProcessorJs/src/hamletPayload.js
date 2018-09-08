@@ -4,21 +4,27 @@ const payload_pb = require('./protos/payload_pb')
 class HamletPayload {
 
   constructor (payload) {
-    var currentTransaction =  payload_pb.TransactionPayload().deserializeBinary(payload)
-    console.log(payload)
-    console.log(currentTransaction)
+
+    this.transaction = payload_pb.TransactionPayload
+    this.currentTransaction =  this.transaction.deserializeBinary(payload)
+
+  }
+
+  fromBytes(payload) {
+    const deserializedPayload = payload_pb.TransactionPayload.deserializeBinary(payload)
+    return deserializedPayload
   }
 
 
 
   createAccount () {
-    return currentTransaction.CreateAccount
+    return this.currentTransaction.CreateAccount()
   }
 
-  isCreateAccount () {
-    const createAccountObject = payload.TransactionPayload.CREATE_ACCOUNT
-    console.log(createAccountObject)
-    return currentTransaction.payloadType == createAccountObject
+  isCreateAccount (payload) {
+    const createAccountType = payload_pb.TransactionPayload.PayloadType.CREATE_ACCOUNT
+
+    return this.currentTransaction.getPayloadType() == createAccountType
   }
 
 

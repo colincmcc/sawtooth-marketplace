@@ -1,4 +1,4 @@
-const account = require('./protos/account_pb')
+const account_pb = require('./protos/account_pb')
 const addresser = require('./hamletAddresser/addresser')
 
 class HamletState {
@@ -14,7 +14,7 @@ class HamletState {
     let address = addresser.makeAccountAddress(publicKey)
 
     console.log("address getAccount", address )
-
+    console.log(this.context)
     this.stateEntries.push(this.context.getState(
       addresses=[address],
       timeout = this.timeout
@@ -64,7 +64,7 @@ class HamletState {
 
   _getAccountContainer(stateEntries, address) {
     let entry = this._findInState(stateEntries, address)
-    let container = account.AccountContainer()
+    let container = account_pb.AccountContainer()
     container.deserializeBinary(entry.data)
 
     console.log(container)
