@@ -13,14 +13,14 @@ class HamletState {
   getAccount(publicKey){
     let address = addresser.makeAccountAddress(publicKey)
 
-    console.log("address getAccount", address )
-    console.log(this.context)
+
     this.stateEntries.push(this.context.getState(
-      addresses=[address],
-      timeout = this.timeout
+      [address],
+      this.timeout
     ))
 
     let container = this._getAccountContainer(this.stateEntries, address)
+    console.log(container)
     let account = this._getAccountFromContainer(
       container,
       publicKey
@@ -31,16 +31,16 @@ class HamletState {
   setAccount(publicKey, label, description, holdings) {
     let address = addresser.makeAccountAddress(publicKey)
 
-    var container = this._getAccountContainer(this.stateEntries, address)
+    let container = this._getAccountContainer(this.stateEntries, address)
 
-
-    var account = this._getAccountFromContainer(
+    console.log(Promise.resolve(container))
+    let account = this._getAccountFromContainer(
       container,
       publicKey
     )
-    console.log("setAccount acount", account)
 
     if (!account) {
+      account = {}
       account.publicKey = publicKey
       account.label = label
       account.description = description
@@ -51,30 +51,50 @@ class HamletState {
       container.entries.push(account)
     }
 
-    let entries = {
+    let stateEntries = {
       [address]: container.serializeBinary()
     }
 
     return this.context.setState(
-      entries,
+      stateEntries,
       this.timeout
     )
 
   }
 
+
   _getAccountContainer(stateEntries, address) {
     let entry = this._findInState(stateEntries, address)
-    let container = account_pb.AccountContainer()
-    container.deserializeBinary(entry.data)
+    let container
+    console.log(entry)
 
-    console.log(container)
+    if(entry){
+      container = account_pb.AccountContainer.deserializeBinary(entry.data)
+    } else {
+      container = new account_pb.AccountContainer()
+    }
+    var currentContext = this.context.getState([address], this.timeout)
 
+    console.log(currentContext)
     return container
+  }
+
+  _getAccountFromContainer(container, identifier) {
+
+      container.getEntriesList().forEach(account => {
+        if(account.publicKey == identifier){
+          return account
+        } else {
+          console.log(identifier + " was not found in container.")
+          return null
+        }
+      })
   }
 
   // locate specific address in state
   _findInState(stateEntries, address) {
     stateEntries.forEach(entry => {
+      console.log(entry)
       if(entry.address == address){
         console.log(address)
         return entry

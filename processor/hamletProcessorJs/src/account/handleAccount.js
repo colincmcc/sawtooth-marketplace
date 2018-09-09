@@ -1,5 +1,5 @@
 const { InvalidTransaction } = require('sawtooth-sdk/processor/exceptions')
-const { HamletState } = require('../hamletState')
+const HamletState  = require('../hamletState')
 
 
 // createAccount (CreateAccount): The transaction.
@@ -7,23 +7,21 @@ const { HamletState } = require('../hamletState')
 // state (MarketplaceState): The wrapper around the Context.
 
 const handleAccountCreation = (createAccount, header, state) => {
-  console.log(createAccount, header, state)
   const currentAccount = state.getAccount(header.signerPublicKey)
-
+  console.log(createAccount.label)
   if(currentAccount){
     throw new InvalidTransaction(
       `Account with key ${header.signerPublicKey} already exists!`
     )
   } else {
-    const newAccount = {
-      public_key: header.signerPublicKey,
-      label: createAccount.label,
-      description: createAccount.description,
-      holdings: []
-    }
-    HamletState.setAccount(newAccount)
+    state.setAccount(
+      header.signerPublicKey,
+      createAccount.label,
+      createAccount.description,
+      holdings = []
+    )
   }
 
 }
 
-module.exports ={ handleAccountCreation}
+module.exports = { handleAccountCreation }
