@@ -1,27 +1,61 @@
 const account_pb = require('./protos/account_pb')
+const asset_pb = require('./protos/asset_pb')
 const addresser = require('./hamletAddresser/addresser')
 
 class HamletState {
   constructor (context) {
     this.context = context
-    this.addressCache = new Map([])
     this.stateEntries = []
     this.timeout = 500 // timeout in milliseconds
   }
 
-
-  getAccount(publicKey){
+// ASSET FUNCTIONS
+  getAsset(name){
     let address = addresser.makeAccountAddress(publicKey)
-
-
-    this.stateEntries.push(this.context.getState(
+   this.context.getState(
       [address],
       this.timeout
-    ))
+    ).then(addressValues => {
+      this.stateEntries.push(addressValues)
+    })
 
     let container = this._getAccountContainer(this.stateEntries, address)
-    console.log(container)
     let account = this._getAccountFromContainer(
+      container,
+      publicKey
+    )
+    return account
+  }
+
+  setAsset(address, name){
+
+  }
+
+  _getAssetContainer(stateEntries, address){
+    let entry = this._findInState(stateEntries, address)
+    let container
+
+    if(entry){
+      container = asset_pb.AssetContainer.deserializeBinary(entry.data)
+    } else {
+      container = new  asset_pb.AssetContainer()
+    }
+
+    return container
+  }
+
+  // ACCOUNT FUNCTIONS
+  getAccount(publicKey){
+    let address = addresser.makeAccountAddress(publicKey)
+   this.context.getState(
+      [address],
+      this.timeout
+    ).then(addressValues => {
+      this.stateEntries.push(addressValues)
+    })
+
+    let container = this._getAccountContainer(this.stateEntries, address)
+    let account = this._getEntryFromContainer(
       container,
       publicKey
     )
@@ -33,22 +67,21 @@ class HamletState {
 
     let container = this._getAccountContainer(this.stateEntries, address)
 
-    console.log(Promise.resolve(container))
-    let account = this._getAccountFromContainer(
+    let account = this._getEntryFromContainer(
       container,
       publicKey
     )
 
     if (!account) {
-      account = {}
+      account = container.addEntries()
       account.publicKey = publicKey
       account.label = label
       account.description = description
-
+      console.log(account)
       holdings.forEach(holding => {
         account.holdings.push(holding)
       })
-      container.entries.push(account)
+      container.addEntries(account)
     }
 
     let stateEntries = {
@@ -62,28 +95,31 @@ class HamletState {
 
   }
 
-
   _getAccountContainer(stateEntries, address) {
     let entry = this._findInState(stateEntries, address)
     let container
-    console.log(entry)
 
     if(entry){
       container = account_pb.AccountContainer.deserializeBinary(entry.data)
     } else {
       container = new account_pb.AccountContainer()
     }
-    var currentContext = this.context.getState([address], this.timeout)
 
-    console.log(currentContext)
     return container
   }
 
-  _getAccountFromContainer(container, identifier) {
+  // HOLDING FUNCTIONS
 
-      container.getEntriesList().forEach(account => {
-        if(account.publicKey == identifier){
-          return account
+
+  // OFFER FUNCTIONS
+
+  // HELPER FUNCTIONS
+
+  _getContainer(containerType) {}
+  _getEntryFromContainer(container, identifier) {
+      container.getEntriesList().forEach(entry => {
+        if(entry.publicKey == identifier){
+          return entry
         } else {
           console.log(identifier + " was not found in container.")
           return null
@@ -94,9 +130,7 @@ class HamletState {
   // locate specific address in state
   _findInState(stateEntries, address) {
     stateEntries.forEach(entry => {
-      console.log(entry)
       if(entry.address == address){
-        console.log(address)
         return entry
       }
     })

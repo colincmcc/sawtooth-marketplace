@@ -8,7 +8,7 @@ const HamletState  = require('../hamletState')
 
 const handleAccountCreation = (createAccount, header, state) => {
   const currentAccount = state.getAccount(header.signerPublicKey)
-  console.log(createAccount.label)
+  console.log("currentAccount", currentAccount)
   if(currentAccount){
     throw new InvalidTransaction(
       `Account with key ${header.signerPublicKey} already exists!`
