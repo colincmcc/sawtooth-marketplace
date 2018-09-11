@@ -24,7 +24,7 @@ class HamletHandler  extends TransactionHandler {
 
 
     if (payload.isCreateAccount()) {
-      return handleAccount.handleAccountCreation(payload.createAccount, transactionProcessRequest.header, state)
+      return handleAccount.handleAccountCreation(payload.createAccount(), transactionProcessRequest.header, state)
    /* } else if (payload.action === 'createAsset') {
       return asset.handleAssetCreation(payload.createAsset, transaction.header, hamletState) */
     } else {

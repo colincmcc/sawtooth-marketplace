@@ -6,6 +6,7 @@ class HamletState {
   constructor (context) {
     this.context = context
     this.stateEntries = []
+    this.addressCache = new Map([])
     this.timeout = 500 // timeout in milliseconds
   }
 
@@ -15,7 +16,8 @@ class HamletState {
    this.context.getState(
       [address],
       this.timeout
-    ).then(addressValues => {
+    ).catch(e => console.log(e)).then(addressValues => {
+      console.log(addressValues)
       this.stateEntries.push(addressValues)
     })
 
@@ -47,12 +49,16 @@ class HamletState {
   // ACCOUNT FUNCTIONS
   getAccount(publicKey){
     let address = addresser.makeAccountAddress(publicKey)
+    console.log(address)
+
    this.context.getState(
       [address],
       this.timeout
-    ).then(addressValues => {
+    ).catch(e => console.log(e)).then(addressValues => {
+      console.log("addressValues", addressValues)
       this.stateEntries.push(addressValues)
     })
+    console.log('stateEntries getAccount', this.stateEntries)
 
     let container = this._getAccountContainer(this.stateEntries, address)
     let account = this._getEntryFromContainer(
@@ -62,36 +68,37 @@ class HamletState {
     return account
   }
 
+
   setAccount(publicKey, label, description, holdings) {
     let address = addresser.makeAccountAddress(publicKey)
-
+    console.log(address)
     let container = this._getAccountContainer(this.stateEntries, address)
 
     let account = this._getEntryFromContainer(
       container,
-      publicKey
+      publicKey,
+      "publicKey"
     )
 
     if (!account) {
       account = container.addEntries()
-      account.publicKey = publicKey
-      account.label = label
-      account.description = description
-      console.log(account)
-      holdings.forEach(holding => {
-        account.holdings.push(holding)
-      })
-      container.addEntries(account)
+      account.setPublicKey(publicKey)
+      account.setLabel(label)
+      account.setDescription(description)
+      account.setHoldingsList(holdings)
+      console.log("account after", account)
     }
-
+    console.log("container after", container)
+    console.log('container entries', container.getEntriesList())
     let stateEntries = {
       [address]: container.serializeBinary()
     }
 
+    console.log("state Entry", account_pb.AccountContainer.deserializeBinary(stateEntries[address]))
     return this.context.setState(
       stateEntries,
       this.timeout
-    )
+    ).catch(e => console.log(e))
 
   }
 
@@ -116,9 +123,12 @@ class HamletState {
   // HELPER FUNCTIONS
 
   _getContainer(containerType) {}
-  _getEntryFromContainer(container, identifier) {
+
+
+  _getEntryFromContainer(container, identifier, identifierType) {
       container.getEntriesList().forEach(entry => {
-        if(entry.publicKey == identifier){
+        console.log("entry",entry[identifierType].deserializeBinary())
+        if(entry[identifierType] == identifier){
           return entry
         } else {
           console.log(identifier + " was not found in container.")
@@ -127,10 +137,37 @@ class HamletState {
       })
   }
 
+  _loadAddressState(publicKey, deserializeFunc) {
+    let address = addresser.makeAccountAddress(publicKey)
+
+    if (this.addressCache.has(address)){
+      if(this.addressCache.get(address) === null) {
+        return Promise.resolve(new Map([]))
+      } else {
+        return Promise.resolve(deserializeFunc(this.addressCache.get(address)))
+      }
+    } else {
+      return this.context.getState([address], this.timeout)
+        .then(addressValues => {
+          if(!addressValues[address].toString()) {
+            this.this.addressCache.set(address, null)
+            return new Map([])
+          } else {
+            let data = addressValues[address].toString()
+            this.addressCache.set(address, data)
+            console.log("des data", deserializeFunc(data) )
+            return deserializeFunc(data)
+          }
+        })
+    }
+
+  }
+
   // locate specific address in state
   _findInState(stateEntries, address) {
     stateEntries.forEach(entry => {
-      if(entry.address == address){
+      console.log(entry)
+      if(entry[address]){
         return entry
       }
     })

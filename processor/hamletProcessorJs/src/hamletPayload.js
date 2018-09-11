@@ -7,7 +7,7 @@ class HamletPayload {
 
     this.transaction = payload_pb.TransactionPayload
     this.currentTransaction =  this.transaction.deserializeBinary(payload)
-
+    console.log(this.currentTransaction)
   }
 
   fromBytes(payload) {
@@ -16,14 +16,14 @@ class HamletPayload {
   }
 
 
-
+  // Returns protobuf Create Account type to the
+  // handleAccountCreation function
   createAccount () {
-    return this.currentTransaction.CreateAccount()
+    return this.currentTransaction.getCreateAccount()
   }
 
   isCreateAccount (payload) {
     const createAccountType = payload_pb.TransactionPayload.PayloadType.CREATE_ACCOUNT
-
     return this.currentTransaction.getPayloadType() == createAccountType
   }
 

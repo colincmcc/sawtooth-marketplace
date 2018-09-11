@@ -1,5 +1,6 @@
 
 const crypto = require('crypto')
+var bigInt = require("big-integer")
 
 // Make a unique hamlet address
 const NS_HASH = (x) =>
@@ -26,30 +27,38 @@ const addressSpace = Object.freeze({
 })
 
 function hash  (identifier) {
-  return crypto.createHash('sha512').update(identifier).digest('hex').toLowerCase()
+  return crypto.createHash('sha512').update(encodeURIComponent(identifier)).digest('hex')
 }
 
-const compress = (address, start, stop) => {
-  return "%.2X".toLowerCase() % (parseInt(address, 16) % (stop - start))
+
+// Returns a two digit hex based on the given parameters
+// Javascript ints are actually floats
+// for this to work with python scripts we need to use an outside package to deal with large integers
+const _compress = (address, start, stop) => {
+  const startStopMod = stop - start
+  const bi = bigInt(address, 16)
+  const biMod = bi.mod(startStopMod) + start
+
+  return biMod.toString(16)
 }
 
 // accountId is user's public key
 function makeAccountAddress (accountId) {
   const fullHash = hash(accountId)
 
-  return HAMLET_NAMESPACE + compress(
+  return HAMLET_NAMESPACE + _compress(
     fullHash,
     accountSpace.START,
     accountSpace.STOP
-  ) + fullHash.slice(0, 62)
+  ) + fullHash.substring(0, 62)
 }
 
 const spaceContains = (num, space) => {
   return space.START <= num < space.STOP
 }
 
-function makeAddress(address) {
-  if (address.slice(0, address.length()) != _nsHash){
+function addressIs(address) {
+  if (address.slice(0, address.length()) !=  HAMLET_NAMESPACE){
     return addressSpace.OTHER
   }
 
@@ -70,5 +79,5 @@ module.exports = {
   HAMLET_FAMILY,
   HAMLET_NAMESPACE,
   makeAccountAddress,
-  makeAddress,
+  addressIs,
 }
