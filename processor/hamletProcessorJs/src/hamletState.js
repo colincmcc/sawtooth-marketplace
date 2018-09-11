@@ -55,7 +55,6 @@ class HamletState {
       [address],
       this.timeout
     ).catch(e => console.log(e)).then(addressValues => {
-      console.log("addressValues", addressValues)
       this.stateEntries.push(addressValues)
     })
     console.log('stateEntries getAccount', this.stateEntries)
