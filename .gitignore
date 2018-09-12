@@ -22,3 +22,4 @@ config.py
 .DS_Store
 .env
 **/rethinkdb_data
+**/.vscode

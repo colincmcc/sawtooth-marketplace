@@ -49,17 +49,23 @@ class HamletState {
   // ACCOUNT FUNCTIONS
   getAccount(publicKey){
     let address = addresser.makeAccountAddress(publicKey)
-    console.log(address)
 
    this.context.getState(
       [address],
       this.timeout
-    ).catch(e => console.log(e)).then(addressValues => {
+    ).then(addressValues => {
+      if(!addressValues[address].toString()){
+        this.addressCache.set(address, null)
+      } else {
+        let data = addressValues[address].toString()
+        this.addressCache.set(address, data)
+      }
       this.stateEntries.push(addressValues)
-    })
-    console.log('stateEntries getAccount', this.stateEntries)
+    }).then(
+    console.log('addressCache =', this.addressCache)
+    )
 
-    let container = this._getAccountContainer(this.stateEntries, address)
+    let container = this._getAccountContainer(this.addressCache, address)
     let account = this._getEntryFromContainer(
       container,
       publicKey
@@ -85,15 +91,12 @@ class HamletState {
       account.setLabel(label)
       account.setDescription(description)
       account.setHoldingsList(holdings)
-      console.log("account after", account)
     }
-    console.log("container after", container)
-    console.log('container entries', container.getEntriesList())
     let stateEntries = {
       [address]: container.serializeBinary()
     }
 
-    console.log("state Entry", account_pb.AccountContainer.deserializeBinary(stateEntries[address]))
+
     return this.context.setState(
       stateEntries,
       this.timeout
@@ -110,7 +113,6 @@ class HamletState {
     } else {
       container = new account_pb.AccountContainer()
     }
-
     return container
   }
 
@@ -126,7 +128,6 @@ class HamletState {
 
   _getEntryFromContainer(container, identifier, identifierType) {
       container.getEntriesList().forEach(entry => {
-        console.log("entry",entry[identifierType].deserializeBinary())
         if(entry[identifierType] == identifier){
           return entry
         } else {
@@ -136,7 +137,7 @@ class HamletState {
       })
   }
 
-  _loadAddressState(publicKey, deserializeFunc) {
+  _loadStateEntries(publicKey, deserializeFunc) {
     let address = addresser.makeAccountAddress(publicKey)
 
     if (this.addressCache.has(address)){
@@ -149,7 +150,7 @@ class HamletState {
       return this.context.getState([address], this.timeout)
         .then(addressValues => {
           if(!addressValues[address].toString()) {
-            this.this.addressCache.set(address, null)
+            this.addressCache.set(address, null)
             return new Map([])
           } else {
             let data = addressValues[address].toString()
@@ -164,8 +165,9 @@ class HamletState {
 
   // locate specific address in state
   _findInState(stateEntries, address) {
+
     stateEntries.forEach(entry => {
-      console.log(entry)
+      console.log("find in state entry",entry)
       if(entry[address]){
         return entry
       }
