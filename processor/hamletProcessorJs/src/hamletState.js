@@ -50,22 +50,10 @@ class HamletState {
   getAccount(publicKey){
     let address = addresser.makeAccountAddress(publicKey)
 
-   this.context.getState(
-      [address],
-      this.timeout
-    ).then(addressValues => {
-      if(!addressValues[address].toString()){
-        this.addressCache.set(address, null)
-      } else {
-        let data = addressValues[address].toString()
-        this.addressCache.set(address, data)
-      }
-      this.stateEntries.push(addressValues)
-    }).then(
-    console.log('addressCache =', this.addressCache)
-    )
+    let newContainer = new account_pb.AccountContainer()
 
-    let container = this._getAccountContainer(this.addressCache, address)
+    let container = this._loadEntries(address, newContainer)
+
     let account = this._getEntryFromContainer(
       container,
       publicKey
@@ -77,7 +65,12 @@ class HamletState {
   setAccount(publicKey, label, description, holdings) {
     let address = addresser.makeAccountAddress(publicKey)
     console.log(address)
-    let container = this._getAccountContainer(this.stateEntries, address)
+
+    let newContainer = new account_pb.AccountContainer()
+
+
+    let container = this._loadEntries(address, newContainer)
+    console.log(container)
 
     let account = this._getEntryFromContainer(
       container,
@@ -92,13 +85,18 @@ class HamletState {
       account.setDescription(description)
       account.setHoldingsList(holdings)
     }
-    let stateEntries = {
-      [address]: container.serializeBinary()
+    console.log(container.getEntriesList())
+
+    let data = container.serializeBinary()
+
+    this.addressCache.set(address, data)
+
+    let entriesToSubmit = {
+      [address]: data
     }
 
-
     return this.context.setState(
-      stateEntries,
+      entriesToSubmit,
       this.timeout
     ).catch(e => console.log(e))
 
@@ -137,26 +135,28 @@ class HamletState {
       })
   }
 
-  _loadStateEntries(publicKey, deserializeFunc) {
-    let address = addresser.makeAccountAddress(publicKey)
+  // This will search the cache for the address supplied
+  // if the address is present in the cache it will return a new Map or the deserialized container.
+  // If the address is absent it will do the same search in the context
+  _loadEntries(address, newContainer) {
 
     if (this.addressCache.has(address)){
       if(this.addressCache.get(address) === null) {
-        return Promise.resolve(new Map([]))
+        return newContainer
       } else {
-        return Promise.resolve(deserializeFunc(this.addressCache.get(address)))
+        return this.addressCache.get(address).then(address => address.deserializeBinary())
       }
     } else {
       return this.context.getState([address], this.timeout)
         .then(addressValues => {
+
           if(!addressValues[address].toString()) {
             this.addressCache.set(address, null)
-            return new Map([])
+            return newContainer
           } else {
             let data = addressValues[address].toString()
             this.addressCache.set(address, data)
-            console.log("des data", deserializeFunc(data) )
-            return deserializeFunc(data)
+            return data.deserializeBinary()
           }
         })
     }
