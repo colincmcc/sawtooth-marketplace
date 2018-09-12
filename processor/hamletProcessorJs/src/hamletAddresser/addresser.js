@@ -12,19 +12,19 @@ const HAMLET_NAMESPACE = hash(HAMLET_FAMILY).substring(0,6)
 const _makeHamletAddress = (x) => HAMLET_NAMESPACE + NS_HASH(x)
 
 
-const  accountSpace = Object.freeze({
+const  accountSpace = {
   START: 125,
   STOP: 200
-})
+}
 
-const addressSpace = Object.freeze({
+const addressSpace ={
   ASSET: 0,
   HOLDING: 1,
   ACCOUNT: 2,
   OFFER: 3,
   OFFER_HISTORY: 4,
   OTHER: 100
-})
+}
 
 function hash  (identifier) {
   return crypto.createHash('sha512').update(encodeURIComponent(identifier)).digest('hex')

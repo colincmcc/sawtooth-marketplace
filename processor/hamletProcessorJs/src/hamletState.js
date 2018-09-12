@@ -1,3 +1,6 @@
+
+'use strict'
+
 const account_pb = require('./protos/account_pb')
 const asset_pb = require('./protos/asset_pb')
 const addresser = require('./hamletAddresser/addresser')
@@ -50,9 +53,15 @@ class HamletState {
   getAccount(publicKey){
     let address = addresser.makeAccountAddress(publicKey)
 
-    let newContainer = new account_pb.AccountContainer()
+    this.context.getState(
+      [address],
+      this.timeout
+    ).catch(e => console.log(e)).then(addressValues => {
+      console.log("get account ad val", addressValues)
+      this.addressCache.set(address, addressValues)
+    })
 
-    let container = this._loadEntries(address, newContainer)
+    let container = this._getAccountContainer(this.addressCache, address)
 
     let account = this._getEntryFromContainer(
       container,
@@ -64,14 +73,10 @@ class HamletState {
 
   setAccount(publicKey, label, description, holdings) {
     let address = addresser.makeAccountAddress(publicKey)
-    console.log(address)
 
-    let newContainer = new account_pb.AccountContainer()
+    let container = this._getAccountContainer(this.addressCache, address)
 
-
-    let container = this._loadEntries(address, newContainer)
-    console.log(container)
-
+    console.log("get account con", container)
     let account = this._getEntryFromContainer(
       container,
       publicKey,
@@ -85,15 +90,17 @@ class HamletState {
       account.setDescription(description)
       account.setHoldingsList(holdings)
     }
-    console.log(container.getEntriesList())
+    console.log("entrieslist setaccount", container.getEntriesList())
 
     let data = container.serializeBinary()
 
     this.addressCache.set(address, data)
 
+
     let entriesToSubmit = {
       [address]: data
     }
+    console.log("entries submitted", entriesToSubmit)
 
     return this.context.setState(
       entriesToSubmit,
@@ -102,8 +109,11 @@ class HamletState {
 
   }
 
-  _getAccountContainer(stateEntries, address) {
-    let entry = this._findInState(stateEntries, address)
+  _getAccountContainer(addressCache, address) {
+
+    let entry = addressCache.get(address)
+    console.log('entry', entry)
+
     let container
 
     if(entry){
@@ -125,6 +135,7 @@ class HamletState {
 
 
   _getEntryFromContainer(container, identifier, identifierType) {
+      console.log("get entry con", container)
       container.getEntriesList().forEach(entry => {
         if(entry[identifierType] == identifier){
           return entry
@@ -138,23 +149,30 @@ class HamletState {
   // This will search the cache for the address supplied
   // if the address is present in the cache it will return a new Map or the deserialized container.
   // If the address is absent it will do the same search in the context
-  _loadEntries(address, newContainer) {
+  _loadEntries(address, emptyContainer) {
 
     if (this.addressCache.has(address)){
+
+      // address is in cache
       if(this.addressCache.get(address) === null) {
-        return newContainer
+        console.log("1 new Container")
+        return new emptyContainer
       } else {
+        console.log("2 addressCache", this.addressCache.get(address).then(address => address.deserializeBinary()))
         return this.addressCache.get(address).then(address => address.deserializeBinary())
       }
     } else {
+      // check state for address
       return this.context.getState([address], this.timeout)
         .then(addressValues => {
-
           if(!addressValues[address].toString()) {
+            // address is not in state
+            console.log("3 new Container")
             this.addressCache.set(address, null)
-            return newContainer
+            return account_pb.AccountContainer()
           } else {
             let data = addressValues[address].toString()
+            console.log("4 data context",  data.deserializeBinary())
             this.addressCache.set(address, data)
             return data.deserializeBinary()
           }
