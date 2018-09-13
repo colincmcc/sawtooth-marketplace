@@ -7,8 +7,8 @@ const HamletState  = require('../hamletState')
 // state (MarketplaceState): The wrapper around the Context.
 
 const handleAccountCreation = (createAccount, header, state) => {
-  const currentAccount = state.getAccount(header.signerPublicKey)
-  if(currentAccount){
+
+  if(state.getAccount(header.signerPublicKey)){
     throw new InvalidTransaction(
       `Account with key ${header.signerPublicKey} already exists!`
     )

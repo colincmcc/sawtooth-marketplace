@@ -8,7 +8,6 @@ const addresser = require('./hamletAddresser/addresser')
 class HamletState {
   constructor (context) {
     this.context = context
-    this.stateEntries = []
     this.addressCache = new Map([])
     this.timeout = 500 // timeout in milliseconds
   }
@@ -59,15 +58,16 @@ class HamletState {
     ).catch(e => console.log(e)).then(addressValues => {
       console.log("get account ad val", addressValues)
       this.addressCache.set(address, addressValues)
+
+      let container = this._getAccountContainer(this.addressCache, address)
+
+      let account = this._getEntryFromContainer(
+        container,
+        publicKey
+      )
+      return account
     })
 
-    let container = this._getAccountContainer(this.addressCache, address)
-
-    let account = this._getEntryFromContainer(
-      container,
-      publicKey
-    )
-    return account
   }
 
 
