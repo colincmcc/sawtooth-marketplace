@@ -9,44 +9,11 @@ class HamletState {
   constructor (context) {
     this.context = context
     this.addressCache = new Map([])
-    this.timeout = 500 // timeout in milliseconds
+    this.timeout = 2000 // timeout in milliseconds
   }
 
 // ASSET FUNCTIONS
-  getAsset(name){
-    let address = addresser.makeAccountAddress(publicKey)
-   this.context.getState(
-      [address],
-      this.timeout
-    ).catch(e => console.log(e)).then(addressValues => {
-      console.log(addressValues)
-      this.stateEntries.push(addressValues)
-    })
 
-    let container = this._getAccountContainer(this.stateEntries, address)
-    let account = this._getAccountFromContainer(
-      container,
-      publicKey
-    )
-    return account
-  }
-
-  setAsset(address, name){
-
-  }
-
-  _getAssetContainer(stateEntries, address){
-    let entry = this._findInState(stateEntries, address)
-    let container
-
-    if(entry){
-      container = asset_pb.AssetContainer.deserializeBinary(entry.data)
-    } else {
-      container = new  asset_pb.AssetContainer()
-    }
-
-    return container
-  }
 
   // ACCOUNT FUNCTIONS
   getAccount(publicKey){
@@ -105,7 +72,7 @@ class HamletState {
     return this.context.setState(
       entriesToSubmit,
       this.timeout
-    ).catch(e => console.log(e))
+    ).then(res => Promise.resolve(res))
 
   }
 
