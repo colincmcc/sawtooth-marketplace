@@ -25,8 +25,9 @@ class HamletHandler  extends TransactionHandler {
 
     if (payload.isCreateAccount()) {
       return handleAccount.handleAccountCreation(payload.createAccount(), transactionProcessRequest.header, state)
-   /* } else if (payload.action === 'createAsset') {
-      return asset.handleAssetCreation(payload.createAsset, transaction.header, hamletState) */
+    } else if (payload.isCreateAsset()) {
+      console.log("create asset")
+      return handleAsset.handleAssetCreation(payload.createAsset(), transactionProcessRequest.header, state)
     } else {
       throw new InvalidTransaction(
           `${payload.action} is not recognized as an action.`

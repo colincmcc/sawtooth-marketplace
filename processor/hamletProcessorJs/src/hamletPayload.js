@@ -10,14 +10,7 @@ class HamletPayload {
     console.log(this.currentTransaction)
   }
 
-  fromBytes(payload) {
-    const deserializedPayload = payload_pb.TransactionPayload.deserializeBinary(payload)
-    return deserializedPayload
-  }
-
-
-  // Returns protobuf Create Account type to the
-  // handleAccountCreation function
+  // Returns protobuf Create Account message
   createAccount () {
     return this.currentTransaction.getCreateAccount()
   }
@@ -27,6 +20,14 @@ class HamletPayload {
     return this.currentTransaction.getPayloadType() == createAccountType
   }
 
+  createAsset () {
+    return this.currentTransaction.getCreateAsset()
+  }
+
+  isCreateAsset (payload) {
+    const createAssetType = payload_pb.TransactionPayload.PayloadType.CREATE_ASSET
+    return this.currentTransaction.getPayloadType() == createAssetType
+  }
 
 }
 

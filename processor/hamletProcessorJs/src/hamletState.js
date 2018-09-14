@@ -3,7 +3,14 @@
 
 const account_pb = require('./protos/account_pb')
 const asset_pb = require('./protos/asset_pb')
+const rule_pb = require('./protos/rule_pb')
+
 const addresser = require('./hamletAddresser/addresser')
+
+
+const OFFER_RULES = [rule_pb.Rule.EXCHANGE_ONCE_PER_ACCOUNT,
+  rule_pb.Rule.EXCHANGE_ONCE,
+  rule_pb.Rule.EXCHANGE_LIMITED_TO_ACCOUNTS]
 
 class HamletState {
   constructor (context) {
@@ -13,7 +20,78 @@ class HamletState {
   }
 
 // ASSET FUNCTIONS
+getAsset(name){
+  let address = addresser.makeAssetAddress(name)
+  this.context.getState(
+    [address],
+    this.timeout
+  ).then(addressValues => {
+    console.log("get asset ad val", addressValues)
+    this.addressCache.set(address, addressValues)
 
+    let container = this._getAssetContainer(this.addressCache, address)
+
+    let asset = this._getEntryFromContainer(
+      container,
+      name
+    )
+    return asset
+  })
+}
+
+
+setAsset(name, description, owners, rules) {
+  let address = addresser.makeAssetAddress(name)
+  console.log(address)
+
+  let container = this._getAssetContainer(this.addressCache, address)
+
+  console.log("get asset con", container)
+  let asset = this._getEntryFromContainer(
+    container,
+    name,
+    "name"
+  ) || container.addEntries()
+    console.log("asset", asset)
+
+    asset.setName(name)
+    asset.setOwnersList(owners)
+    asset.setDescription(description)
+    asset.setRulesList(rules)
+
+  console.log("entrieslist setasset", container.getEntriesList())
+
+  let data = container.serializeBinary()
+
+  this.addressCache.set(address, data)
+
+
+  let entriesToSubmit = {
+    [address]: data
+  }
+  console.log("entries submitted", entriesToSubmit)
+
+  return this.context.setState(
+    entriesToSubmit,
+    this.timeout
+  ).then(res => Promise.resolve(res))
+
+}
+
+_getAssetContainer(addressCache, address) {
+
+  let entry = addressCache.get(address)
+  console.log('entry', entry)
+
+  let container
+
+  if(entry){
+    container = asset_pb.AssetContainer.deserializeBinary(entry.data)
+  } else {
+    container = new asset_pb.AssetContainer()
+  }
+  return container
+}
 
   // ACCOUNT FUNCTIONS
   getAccount(publicKey){
@@ -22,7 +100,7 @@ class HamletState {
     this.context.getState(
       [address],
       this.timeout
-    ).catch(e => console.log(e)).then(addressValues => {
+    ).then(addressValues => {
       console.log("get account ad val", addressValues)
       this.addressCache.set(address, addressValues)
 

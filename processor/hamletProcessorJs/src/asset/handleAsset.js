@@ -1,31 +1,29 @@
-/*
+
 const { InvalidTransaction } = require('sawtooth-sdk/processor/exceptions')
 
 // createAsset (CreateAsset): The transaction.
 // header (TransactionHeader): The header of the Transaction.
 // state (MarketplaceState): The wrapper around the context.
 
-function handleAssetCreation (createAsset, header, state) {
-  const currentAccount = state.getAccount(header.signer_public_key)
-  const currentAsset = state.getAsset(createAsset.name)
-  if(!currentAccount) {
+const handleAssetCreation = (createAsset, header, state) => {
+  let assetName = createAsset.getName()
+  console.log(assetName)
+  if(state.getAccount(header.signerPublicKey)){
     throw new InvalidTransaction(
-      `This signing key has no account!  We were unable to create the asset.`
+      `Unable to create asset, signing key has no Account:  ${header.signerPublicKey} `
     )
-  } else if (currentAsset){
+  } else if (state.getAsset(assetName)) {
     throw new InvalidTransaction(
-      `This asset already exists, please choose a different name`
+      `Asset named ${createAsset.getName()} already exist`
     )
   } else {
-    const newAsset = {
-      name=createAsset.name,
-      description=createAsset.description,
-      owners=[header.signer_public_key],
-      rules=createAsset.rules
-    }
-    state.setAsset(newAsset)
+    state.setAsset(
+      assetName,
+      createAsset.getDescription(),
+      [header.signerPublicKey],
+      createAsset.getRulesList()
+    )
   }
 }
 
-module.exports = handleAssetCreation
-*/
+module.exports = {handleAssetCreation}

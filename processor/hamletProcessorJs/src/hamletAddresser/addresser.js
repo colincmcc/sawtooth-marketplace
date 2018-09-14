@@ -11,11 +11,27 @@ const HAMLET_NAMESPACE = hash(HAMLET_FAMILY).substring(0,6)
 
 const _makeHamletAddress = (x) => HAMLET_NAMESPACE + NS_HASH(x)
 
-
+const offerHistorySpace = {
+  START: 0,
+  STOP: 1
+}
+const assetSpace = {
+  START: 1,
+  STOP: 50
+}
+const holdingSpace = {
+  START: 50,
+  STOP:  125
+}
 const  accountSpace = {
   START: 125,
   STOP: 200
 }
+const offerSpace = {
+  START: 200,
+  STOP: 256
+}
+
 
 const addressSpace ={
   ASSET: 0,
@@ -53,6 +69,39 @@ function makeAccountAddress (accountId) {
   ) + fullHash.substring(0, 62)
 }
 
+function makeOfferAccountAddress(offerId, account){
+  const offerHash = hash(offerId)
+  const accountHash = hash(account)
+
+  return HAMLET_NAMESPACE  + '00' + offerHash.substring(0, 60) + _compress(accountHash, 1, 256)
+}
+
+function makeOfferHistoryAddress(offerId){
+  const offerHash = hash(offerId)
+
+  return HAMLET_NAMESPACE  + '00' + offerHash.substring(0,60), + '00'
+}
+
+function makeAssetAddress(assetId){
+  const fullHash = hash(assetId)
+
+  return HAMLET_NAMESPACE  + _compress(
+    fullHash,
+    assetSpace.START,
+    assetSpace.STOP
+  ) + fullHash.substring(0, 62)
+}
+
+function makeHoldingAddress(holdingId){
+  let fullHash = hash(holdingId)
+
+  return HAMLET_NAMESPACE  + _compress(
+    fullHash,
+    holdingSpace.START,
+    holdingSpace.STOP
+  ) +  fullHash.substring(0, 62)
+}
+
 const spaceContains = (num, space) => {
   return space.START <= num < space.STOP
 }
@@ -79,5 +128,9 @@ module.exports = {
   HAMLET_FAMILY,
   HAMLET_NAMESPACE,
   makeAccountAddress,
+  makeAssetAddress,
+  makeHoldingAddress,
+  makeOfferAccountAddress,
+  makeOfferHistoryAddress,
   addressIs,
 }
