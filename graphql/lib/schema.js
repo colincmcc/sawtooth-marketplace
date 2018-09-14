@@ -5,7 +5,7 @@ import { pubsub } from "./subscriptions";
 import {dev, prod} from './config'
 require('dotenv').config()
 
-const sawtoothMKURL = process.env.SAWTOOTH_MK_URL
+const sawtoothValidatorURL = process.env.SAWTOOTH_VALIDATOR_URL
 
 // * Sawtooth
 // -Queries

@@ -7,7 +7,6 @@ class HamletPayload {
 
     this.transaction = payload_pb.TransactionPayload
     this.currentTransaction =  this.transaction.deserializeBinary(payload)
-    console.log(this.currentTransaction)
   }
 
   // Returns protobuf Create Account message

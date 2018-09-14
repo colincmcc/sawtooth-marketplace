@@ -23,6 +23,7 @@
     "mailgun.js": "^2.0.1",
     "node-fetch": "^2.2.0",
     "request-promise": "^4.2.2",
+    "rethinkdb": "^2.3.3",
     "subscriptions-transport-ws": "^0.9.14"
   },
   "main": "lib/index.js",

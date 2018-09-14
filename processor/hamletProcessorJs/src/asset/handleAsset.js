@@ -12,12 +12,12 @@ const handleAssetCreation = (createAsset, header, state) => {
     throw new InvalidTransaction(
       `Unable to create asset, signing key has no Account:  ${header.signerPublicKey} `
     )
-  } else if (state.getAsset(assetName)) {
+  } else if (state.getAssetState(assetName)) {
     throw new InvalidTransaction(
       `Asset named ${createAsset.getName()} already exist`
     )
   } else {
-    state.setAsset(
+    state.setAssetState(
       assetName,
       createAsset.getDescription(),
       [header.signerPublicKey],

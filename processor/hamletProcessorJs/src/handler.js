@@ -9,7 +9,6 @@ const HamletState = require('./hamletState')
 
 class HamletHandler  extends TransactionHandler {
   constructor (payload) {
-    console.log(addresser.HAMLET_FAMILY, addresser.HAMLET_NAMESPACE)
     super(addresser.HAMLET_FAMILY, ['1.1'], [addresser.HAMLET_NAMESPACE])
   }
 
@@ -26,7 +25,6 @@ class HamletHandler  extends TransactionHandler {
     if (payload.isCreateAccount()) {
       return handleAccount.handleAccountCreation(payload.createAccount(), transactionProcessRequest.header, state)
     } else if (payload.isCreateAsset()) {
-      console.log("create asset")
       return handleAsset.handleAssetCreation(payload.createAsset(), transactionProcessRequest.header, state)
     } else {
       throw new InvalidTransaction(

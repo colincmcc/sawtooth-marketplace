@@ -82,6 +82,7 @@ function makeOfferHistoryAddress(offerId){
   return HAMLET_NAMESPACE  + '00' + offerHash.substring(0,60), + '00'
 }
 
+// TODO: fix whitespace error.  Python seems to register spaces differently than our JS function
 function makeAssetAddress(assetId){
   const fullHash = hash(assetId)
 
