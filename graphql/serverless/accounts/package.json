@@ -12,6 +12,7 @@
     "serverless-apigw-binary": "^0.4.4"
   },
   "dependencies": {
-    "aws-sdk": "^2.315.0"
+    "aws-sdk": "^2.315.0",
+    "sawtooth-sdk": "^1.0.5"
   }
 }
