@@ -6,11 +6,11 @@
     "interpreter": "python3",
     "args": "--host localhost --db-host localhost --validator tcp://localhost:4004"
    },
-   { 
+   {
     "name": "rethinkdb",
     "script": "rethinkdb"
    },
-   { 
+   {
     "name": "market-tp",
     "script": "./bin/marketplace-tp",
     "interpreter": "python3",
@@ -27,6 +27,11 @@
     "script": "identity-tp",
     "interpreter": "python3",
     "args": "-v -C tcp://localhost:4004"
+   },
+   {
+     "name": "hamlet-tp",
+     "cwd": "./processor/hamletProcessorJs",
+     "script": "./src/index.js"
    }
   ]
 }

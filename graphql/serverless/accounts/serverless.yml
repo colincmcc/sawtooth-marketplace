@@ -83,6 +83,7 @@ environment:
   SECRET_KEY: '%FAFcvcbvr44$$kCVC23kdie'  # any string - used to encrypt & decrypt auth token
   AES_KEY: 'ff3dab2a85555e9f6e21be8ed4a60a65'  # 32 character hex string - used to encrypt private key over network
   BATCHER_PRIVATE_KEY: '858223b715c517399b789a5c74e01145e0770ff9c55a3b4fd8efbd13eda41c6d'  # 64 character hex string
+  KMS_KEY: 'arn:aws:kms:us-east-2:465005727508:key/2673a50b-0d76-41ee-a00c-cf1cae07252c'
 
 
 # you can add packaging information here

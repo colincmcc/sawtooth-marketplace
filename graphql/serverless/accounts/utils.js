@@ -31,7 +31,7 @@ const getSigner = async (req) => {
   const email = deserializeAuthToken(req.token).email
 
 }
-const encryptPrivKey = (aesKey, pubKey, privKey) => {
+const encryptPrivKey = (kms, pubKey, privKey) => {
   const context = createContext('secp256k1')
   const privateKey = context.newRandomPrivateKey()
 }
