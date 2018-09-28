@@ -44,8 +44,10 @@ RUN npm install pm2
 
 RUN pm2 start pm2-marketplace.json
 
+EXPOSE 4004/tcp
+
 WORKDIR /project/sawtooth-marketplace
 
-ENV PATH $PATH:/project/sawtooth-marketplace/bin
+ENV PATH $PATH:/project/sawtooth-marketplace
 
 CMD ['marketplace-tp']
