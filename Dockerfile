@@ -36,8 +36,6 @@ RUN apt-get install -y -q --no-install-recommends \
 
 RUN npm install pm2 -g
 
-RUN pm2 start pm2-marketplace.json
-
 EXPOSE 4004/tcp
 
 ENV PATH $PATH:/project/sawtooth-marketplace
