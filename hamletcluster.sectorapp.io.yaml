@@ -5,7 +5,9 @@ metadata:
   name: hamletcluster.sectorapp.io
 spec:
   api:
-    dns: {}
+    loadBalancer:
+      sslCertificate: arn:aws:acm:us-east-2:465005727508:certificate/010232de-fd16-42a5-961f-01ad93d996c1
+      type: Public
   authorization:
     rbac: {}
   channel: stable
@@ -26,7 +28,7 @@ spec:
   kubernetesApiAccess:
   - 0.0.0.0/0
   kubernetesVersion: 1.10.3
-  masterPublicName: api.hamletcluster.sectorapp.io
+  masterPublicName: sawtooth.sectorapp.io
   networkCIDR: 10.0.0.0/16
   networkID: vpc-0d6a4dab5235a1647
   networking:
