@@ -15,6 +15,8 @@
 
 FROM ubuntu:16.04
 
+WORKDIR /project/sawtooth-marketplace
+
 RUN echo "deb http://repo.sawtooth.me/ubuntu/ci xenial universe" >> /etc/apt/sources.list && \
     apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 8AA7AF1F1091A5FD && \
     echo 'deb http://repo.sawtooth.me/ubuntu/1.0/stable xenial universe' >> /etc/apt/sources.list && \
@@ -40,14 +42,12 @@ RUN apt-get install -y -q --no-install-recommends \
  && apt-get clean \
  && rm -rf /var/lib/apt/lists/*
 
-RUN npm install pm2
+RUN npm install pm2 -g
 
 RUN pm2 start pm2-marketplace.json
 
 EXPOSE 4004/tcp
 
-WORKDIR /project/sawtooth-marketplace
-
 ENV PATH $PATH:/project/sawtooth-marketplace
 
-CMD ['marketplace-tp']
+CMD ['pm2 start', './pm2-marketplace.json']
