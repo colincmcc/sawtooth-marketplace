@@ -13,7 +13,7 @@
 # limitations under the License.
 # -----------------------------------------------------------------------------
 
-FROM ubuntu:16.04
+FROM node:8
 
 WORKDIR /project/sawtooth-marketplace
 
@@ -24,8 +24,7 @@ RUN echo "deb http://repo.sawtooth.me/ubuntu/ci xenial universe" >> /etc/apt/sou
     apt-get install -y -q python3-grpcio-tools=1.1.3-1 \
         python3-pip \
         python3-sawtooth-sdk \
-        python3-sawtooth-rest-api \
-        nodejs
+        python3-sawtooth-rest-api
 
 RUN apt-get install -y -q --no-install-recommends \
     curl \
@@ -33,14 +32,7 @@ RUN apt-get install -y -q --no-install-recommends \
     pkg-config \
     build-essential \
     libfontconfig \
-    libzmq3-dev \
- && curl -s -S -o /tmp/setup-node.sh https://deb.nodesource.com/setup_6.x \
- && chmod 755 /tmp/setup-node.sh \
- && /tmp/setup-node.sh \
- && apt-get install nodejs -y -q \
- && rm /tmp/setup-node.sh \
- && apt-get clean \
- && rm -rf /var/lib/apt/lists/*
+    libzmq3-dev
 
 RUN npm install pm2 -g
 
