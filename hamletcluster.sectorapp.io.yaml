@@ -4,9 +4,7 @@ metadata:
   name: hamletcluster.sectorapp.io
 spec:
   api:
-    loadBalancer:
-      sslCertificate: arn:aws:acm:us-east-2:465005727508:certificate/010232de-fd16-42a5-961f-01ad93d996c1
-      type: Public
+    dns: {}
   authorization:
     rbac: {}
   channel: stable
@@ -26,13 +24,12 @@ spec:
     legacy: false
   kubernetesApiAccess:
   - 0.0.0.0/0
-  kubernetesVersion: 1.12
-  masterPublicName: sawtooth.sectorapp.io
+  kubernetesVersion: v1.9.9
+  masterPublicName: api.sectorapp.io
   networkCIDR: 10.0.0.0/16
   networkID: vpc-0d6a4dab5235a1647
   networking:
-    weave:
-      mtu: 8912
+    kubenet: {}
   nonMasqueradeCIDR: 100.64.0.0/10
   sshAccess:
   - 0.0.0.0/0
@@ -60,16 +57,15 @@ spec:
 apiVersion: kops/v1alpha2
 kind: InstanceGroup
 metadata:
-  creationTimestamp: null
   labels:
     kops.k8s.io/cluster: hamletcluster.sectorapp.io
   name: master-us-east-2a
 spec:
   image: kope.io/k8s-1.9-debian-jessie-amd64-hvm-ebs-2018-03-11
   machineType: t2.medium
-  maxPrice: "0.02"
   maxSize: 1
   minSize: 1
+  maxPrice: "0.02"
   nodeLabels:
     kops.k8s.io/instancegroup: master-us-east-2a
   role: Master
@@ -81,16 +77,15 @@ spec:
 apiVersion: kops/v1alpha2
 kind: InstanceGroup
 metadata:
-  creationTimestamp: null
   labels:
     kops.k8s.io/cluster: hamletcluster.sectorapp.io
-  name: spotMedNodes
+  name: spotMicroNodes
 spec:
   image: kope.io/k8s-1.9-debian-jessie-amd64-hvm-ebs-2018-03-11
-  machineType: t2.medium
-  maxPrice: "0.02"
-  maxSize: 5
+  machineType: t2.micro
+  maxSize: 3
   minSize: 2
+  maxPrice: "0.01"
   nodeLabels:
     kops.k8s.io/instancegroup: nodes
   role: Node
@@ -104,14 +99,13 @@ spec:
 apiVersion: kops/v1alpha2
 kind: InstanceGroup
 metadata:
-  creationTimestamp: null
   labels:
     kops.k8s.io/cluster: hamletcluster.sectorapp.io
   name: microNodes
 spec:
   image: kope.io/k8s-1.9-debian-jessie-amd64-hvm-ebs-2018-03-11
   machineType: t2.micro
-  maxSize: 3
+  maxSize: 1
   minSize: 1
   nodeLabels:
     kops.k8s.io/instancegroup: nodes
@@ -120,4 +114,3 @@ spec:
   - us-east-2a
   - us-east-2b
   - us-east-2c
-
