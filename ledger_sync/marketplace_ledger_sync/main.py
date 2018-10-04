@@ -16,6 +16,7 @@
 import sys
 import argparse
 import logging
+import time
 
 from marketplace_ledger_sync.database import Database
 from marketplace_ledger_sync.subscriber import Subscriber
@@ -28,6 +29,20 @@ LOGGER = logging.getLogger(__name__)
 # likely genesis, defeating the purpose. Rewind just 15 blocks to handle forks.
 KNOWN_COUNT = 15
 
+def get_last_known_blocks(database):
+    count = 0
+    while True:
+        try:
+            count = count + 1
+            return database.last_known_blocks(KNOWN_COUNT)
+        except ReqlError as err:
+            if count > 3:
+                LOGGER.error('Tried to get last known block for more than 3 times. Reporting Error ...')
+                raise err
+            LOGGER.exception(err)
+            LOGGER.info('Retrying to get last known block ...')
+            time.sleep(3)
+        break
 
 def parse_args(args):
     parser = argparse.ArgumentParser()
@@ -74,7 +89,7 @@ def main():
         subscriber = Subscriber(opts.validator)
         subscriber.add_handler(get_events_handler(database))
 
-        known_blocks = database.last_known_blocks(KNOWN_COUNT)
+        known_blocks =  get_last_known_blocks(database)
         subscriber.start(known_blocks)
 
     except KeyboardInterrupt:
