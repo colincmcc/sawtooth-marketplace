@@ -1,0 +1,430 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    name: hamlet-api
+    app: hamlet
+    tier: backend
+  name: hamlet-api
+  namespace: sawtooth
+spec:
+  selector:
+    matchLabels:
+      name: hamlet-api
+  template:
+    metadata:
+      labels:
+        name: hamlet-api
+    spec:
+      containers:
+      - args:
+        - -c
+        - sleep 3 &&
+          marketplace-rest-api --host $HOSTNAME --db-host $RETHINKDB_DB_ACCESS_SERVICE_HOST --validator tcp://$SAWTOOTH_VALIDATOR_LB_SERVICE_HOST:4004
+        command:
+        - /bin/sh
+        image: colincmcc/hamlet-rest-api
+        imagePullPolicy: IfNotPresent
+        name: hamlet-rest-api
+        ports:
+        - containerPort: 8000
+          name: hamlet-api
+          protocol: TCP
+      - args:
+        - -c
+        - sleep 1 && market-setup-db --host $RETHINKDB_DB_ACCESS_SERVICE_HOST && marketplace-ledger-sync -vv --db-host $RETHINKDB_DB_ACCESS_SERVICE_HOST --validator tcp://$SAWTOOTH_VALIDATOR_LB_SERVICE_HOST:4004
+        command:
+        - /bin/sh
+        image: colincmcc/hamlet-ledger-sync
+        imagePullPolicy: IfNotPresent
+        name: hamlet-ledger-sync
+
+---
+
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    db: rethinkdb
+    app: hamlet
+    tier: frontend
+  name: hamlet-rethinkdb
+spec:
+  template:
+    metadata:
+      labels:
+        db: rethinkdb
+        app: hamlet
+        tier: frontend
+    spec:
+      containers:
+      - image: colincmcc/sawtooth-rethinkdb-kb
+        args:
+          - -c
+          - rethinkdb
+          - --bind $HOSTNAME
+        command:
+        - /bin/sh
+        name: rethinkdb
+        ports:
+        - containerPort: 8080
+          name: admin
+        - containerPort: 28015
+          name: driver
+        - containerPort: 29015
+          name: cluster
+        volumeMounts:
+        - mountPath: /data/rethinkdb_data
+          name: rethinkdb-storage
+        resources:
+          limits:
+            cpu: 100m
+            memory: 256Mi
+          requests:
+            cpu: 100m
+            memory: 256Mi
+      volumes:
+      - name: rethinkdb-storage
+        emptyDir: {}
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: rethinkdb-db-access
+spec:
+  selector:
+    db: rethinkdb
+  ports:
+  - protocol: "TCP"
+    port: 28015
+    targetPort: 28015
+  - protocol: "TCP"
+    port: 29015
+    targetPort: 29015
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: rethinkdb-db-dashboard
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-ssl-cert: arn:aws:acm:us-east-2:465005727508:certificate/010232de-fd16-42a5-961f-01ad93d996c1
+    service.beta.kubernetes.io/aws-load-balancer-backend-protocol: http
+    service.beta.kubernetes.io/aws-load-balancer-ssl-ports: "443,8443"
+spec:
+  type: LoadBalancer
+  selector:
+    db: rethinkdb
+  ports:
+  - protocol: "TCP"
+    port: 443
+    targetPort: 8080
+
+---
+
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: rethink-db-internal
+  namespace: sawtooth
+spec:
+  ports:
+  - name: "driver"
+    port: 29015
+    protocol: TCP
+    targetPort: 28015
+  selector:
+    db: rethinkdb
+  type: ClusterIP
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: hamlet-api
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-ssl-cert: arn:aws:acm:us-east-2:465005727508:certificate/010232de-fd16-42a5-961f-01ad93d996c1
+    service.beta.kubernetes.io/aws-load-balancer-backend-protocol: http
+    service.beta.kubernetes.io/aws-load-balancer-ssl-ports: "443,8443"
+spec:
+  type: LoadBalancer
+  selector:
+    name: hamlet-api
+    role: admin
+  ports:
+  - protocol: "TCP"
+    port: 443
+    targetPort: 8000
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    db: rethinkdb
+  name: rethinkdb
+spec:
+  clusterIP: None
+  ports:
+  - port: 29015
+  selector:
+    db: rethinkdb
+    role: replica
+
+---
+
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    name: hamlet-api
+    app: hamlet
+    tier: backend
+  name: hamlet-api-admin
+  namespace: sawtooth
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        name: hamlet-api
+        db: rethinkdb
+        tier: backend
+        role: admin
+    spec:
+      containers:
+      - args:
+        - -c
+        - sleep 3 &&
+          marketplace-rest-api --host $HOSTNAME --db-host $HOSTNAME --validator tcp://$SAWTOOTH_VALIDATOR_LB_SERVICE_HOST:4004
+        command:
+        - /bin/sh
+        image: colincmcc/hamlet-rest-api
+        imagePullPolicy: IfNotPresent
+        name: hamlet-rest-api
+        ports:
+        - containerPort: 8000
+          name: hamlet-api
+          protocol: TCP
+      - args:
+        - -c
+        - sleep 1 && market-setup-db --host $HOSTNAME && marketplace-ledger-sync -vv --db-host $HOSTNAME --validator tcp://$SAWTOOTH_VALIDATOR_LB_SERVICE_HOST:4004
+        command:
+        - /bin/sh
+        image: colincmcc/hamlet-ledger-sync
+        imagePullPolicy: IfNotPresent
+        name: hamlet-ledger-sync
+      - image: colincmcc/sawtooth-rethinkdb-kb
+        imagePullPolicy: Always
+        name: rethinkdb
+        env:
+        - name: PROXY
+          value: "true"
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: POD_IP
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: status.podIP
+        - name: RETHINK_CLUSTER
+          value: rethinkdb
+        ports:
+        - containerPort: 8080
+          name: admin
+        - containerPort: 28015
+          name: driver
+        - containerPort: 29015
+          name: cluster
+        livenessProbe:
+          exec:
+            command:
+              - /probe
+          failureThreshold: 3
+          initialDelaySeconds: 15
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 5
+        readinessProbe:
+          exec:
+            command:
+              - /probe
+          failureThreshold: 3
+          initialDelaySeconds: 15
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 5
+        resources:
+          limits:
+            cpu: 100m
+            memory: 256Mi
+          requests:
+            cpu: 100m
+            memory: 256Mi
+        volumeMounts:
+        - mountPath: /data/rethinkdb_data
+          name: storage
+      volumes:
+      - name: storage
+        emptyDir: {}
+
+---
+
+apiVersion: apps/v1beta1
+kind: StatefulSet
+metadata:
+  labels:
+    tier: backend
+    name: hamlet-api
+    db: rethinkdb
+  name: hamlet-api-replica
+spec:
+  volumeClaimTemplates:
+  - metadata:
+      name: data
+      annotations:
+        volume.alpha.kubernetes.io/storage-class: anything
+    spec:
+      accessModes:
+      - ReadWriteOnce
+      resources:
+        requests:
+          storage: 10Gi
+  replicas: 2
+  # Must match RETHINKDB-CLUSTER env and service name.
+  serviceName: rethinkdb
+  template:
+    metadata:
+      labels:
+        name: hamlet-api
+        tier: backend
+        db: rethinkdb
+        role: replica
+    spec:
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      containers:
+      - image: colincmcc/sawtooth-rethinkdb-kb
+        args:
+          - "--cache-size"
+          - "100"
+        imagePullPolicy: Always
+        name: rethinkdb
+        env:
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: POD_IP
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: status.podIP
+        - name: RETHINK_CLUSTER
+          value: rethinkdb
+        - name: USE_SERVICE_LOOKUP
+          value: "yes"
+        ports:
+        - containerPort: 8080
+          name: admin
+        - containerPort: 28015
+          name: driver
+        - containerPort: 29015
+          name: cluster
+        resources:
+          limits:
+            cpu: 100m
+            memory: 256Mi
+          requests:
+            cpu: 100m
+            memory: 256Mi
+        volumeMounts:
+        - mountPath: /data
+          name: data
+        readinessProbe:
+          exec:
+            command:
+            - /probe
+          failureThreshold: 3
+          initialDelaySeconds: 15
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 5
+        livenessProbe:
+          exec:
+            command:
+              - /probe
+          failureThreshold: 3
+          initialDelaySeconds: 15
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 5
+      - args:
+        - -c
+        - sleep 3 &&
+          marketplace-rest-api --host $HOSTNAME --db-host $HOSTNAME --validator tcp://$SAWTOOTH_VALIDATOR_LB_SERVICE_HOST:4004
+        command:
+        - /bin/sh
+        image: colincmcc/hamlet-rest-api
+        imagePullPolicy: IfNotPresent
+        name: hamlet-rest-api
+        ports:
+        - containerPort: 8000
+          name: hamlet-api
+          protocol: TCP
+      - args:
+        - -c
+        - sleep 1 && market-setup-db --host $HOSTNAME && marketplace-ledger-sync -vv --db-host $HOSTNAME --validator tcp://$SAWTOOTH_VALIDATOR_LB_SERVICE_HOST:4004
+        command:
+        - /bin/sh
+        image: colincmcc/hamlet-ledger-sync
+        imagePullPolicy: IfNotPresent
+        name: hamlet-ledger-sync
+
+---
+
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: api-read-account
+---
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: Role
+metadata:
+  name: api-read
+rules:
+  - apiGroups:
+      - ""
+    resources:
+      - endpoints
+    verbs:
+      - list
+      - get
+---
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: RoleBinding
+metadata:
+  name: bind-api-read
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: api-read
+subjects:
+  - kind: ServiceAccount
+    name: api-read-account

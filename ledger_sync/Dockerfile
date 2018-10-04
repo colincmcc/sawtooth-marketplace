@@ -28,4 +28,9 @@ WORKDIR /project/sawtooth-marketplace
 
 ENV PATH $PATH:/project/sawtooth-marketplace/bin
 
+# Note that the context must be set to the project's root directory
+COPY . .
+
+RUN market-protogen
+
 CMD ["marketplace-ledger-sync"]
